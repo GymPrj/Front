@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Join = () => {
+const Login = () => {
   return (
     <div>
-      <p>Join</p>
+      <p>Login</p>
     </div>
   );
 };
 
-export default Join;
+export default Login;
