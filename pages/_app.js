@@ -1,7 +1,20 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
+import PropTypes from 'prop-types';
+import Head from 'next/head';
+import wrapper from '../store/confiureStore';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const MyApp = ({ Component, pageProps }) => (
+  <>
+    <Head>
+      <meta charSet="utf-8" />
+      <title>flow</title>
+    </Head>
+    <Component {...pageProps} />
+  </>
+);
 
-export default MyApp
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+};
+
+export default wrapper.withRedux(MyApp);
