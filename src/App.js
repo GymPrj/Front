@@ -1,40 +1,18 @@
-import './App.css';
-import axios from 'axios'
+import React from 'react';
+import { Provider } from 'react-redux';
+// import { ConnectedRouter } from 'connected-react-router';
+import store from './redux/store';
+import Router from './routes/Router';
+import './assets/css/common.css';
 
-
-function App() {
-  const onClick = async () => {
-    console.log('click')
-
-    const data = {
-      'email': "qwe199942@naver.com",
-      'password': "qwe123"
-    }
-
-    //post 테스트
-    // await axios.post('/session/login', data)
-    // .then(function(response){
-    //   console.log(response);
-      
-    // })
-    // .catch(function(error){
-    //   console.log(error);
-    // });
-
-    // get test
-    await axios.get('/test')
-    .then(function(response){
-      console.log(response);
-    })
-    .catch(function(error){
-      console.log(error);
-    });
-  }
+const App = () => {
   return (
-    <div className="App">
-      <button onClick={onClick}>click</button>
-    </div>
+    <Provider store={store}>
+      {/* <ConnectedRouter history={history}> */}
+      <Router />
+      {/* </ConnectedRouter> */}
+    </Provider>
   );
-}
+};
 
 export default App;
