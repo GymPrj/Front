@@ -1,6 +1,5 @@
-// import axios from 'axios';
-// import { all, fork } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 
-export default function* authSaga() {
-  // yield all([fork()]);
+export default function* rootSaga() {
+  yield all([]);
 }
