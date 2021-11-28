@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Main from '../components/Main';
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
+import RegisterCompany from '../components/auth/RegisterCompany';
 
 const Router = () => {
   return (
@@ -11,6 +12,7 @@ const Router = () => {
         <Route path="/" exact component={Main} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
+        <Route path="/registerCompany" exact component={RegisterCompany} />
       </Switch>
     </BrowserRouter>
   );
