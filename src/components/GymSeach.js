@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, MenuItem, Select } from '@mui/material/';
+import {
+  Container,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Button,
+} from '@mui/material/';
 import styled from 'styled-components';
 
 const Selects = styled(Select)`
@@ -20,6 +27,8 @@ const GymSeach = () => {
   const [town, setTown] = useState([]);
   const [citySelct, setCitySelct] = useState('none');
   const [townSelect, setTownSelect] = useState('none');
+  const [gymList, setGymList] = useState(null);
+  const [gymName, setGymName] = useState('');
 
   const getCityList = async () => {
     // 시 api 리스트 호출
@@ -44,26 +53,41 @@ const GymSeach = () => {
   }, []);
 
   const onClick = async () => {
-    console.log(citySelct, townSelect);
-    let cityIsNull;
-    let townIsNull;
-
-    if (citySelct === 'none') cityIsNull = '';
-    else cityIsNull = citySelct;
-
-    if (townSelect === 'none') townIsNull = '';
-    else townIsNull = townSelect;
+    const url = {
+      params: {
+        cityId: citySelct,
+        gymName,
+        townId: townSelect,
+      },
+    };
+    if (citySelct === 'none') delete url.params.cityId;
+    if (gymName === '') delete url.params.gymName;
+    if (townSelect === 'none') delete url.params.townId;
 
     await axios
-      .get(`gym?cityId=${cityIsNull}&gymName=${null}&townId=${townIsNull}`)
+      .get('gym', url)
       .then(function (response) {
-        const d = response.data;
-        console.log(d);
+        const d = response.data.content;
+        const dd =
+          d.length > 0 &&
+          d.map(val => {
+            return (
+              <li key={val.gymName}>
+                헬스장 이름 : {val.gymName} <br /> ceo 이름 : {val.ceoName}
+                <br />
+                전화번호 : {val.tel} <br /> 멤버수 : {val.memberCount}
+              </li>
+            );
+          });
+        setGymList(dd);
       })
       .catch(function (err) {
         console.log(err);
-        // if (citySelct === 'none') alert('시를 선택해주세요.');
       });
+  };
+
+  const handleGymName = e => {
+    setGymName(e.target.value);
   };
 
   const handleTownList = async event => {
@@ -102,8 +126,16 @@ const GymSeach = () => {
   };
 
   return (
-    <div>
+    <Container component="main" maxWidth="xs" sx={{ mt: 10 }}>
       <Grid container spacing={2} className="addres_area">
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            type="text"
+            value={gymName}
+            onChange={handleGymName}
+          />
+        </Grid>
         <Grid item xs={6}>
           <Selects
             fullWidth
@@ -127,11 +159,19 @@ const GymSeach = () => {
           </Selects>
         </Grid>
       </Grid>
-      <button type="button" onClick={onClick}>
-        {' '}
-        click
-      </button>
-    </div>
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        size="large"
+        onClick={onClick}
+      >
+        검색
+      </Button>
+      <br />
+      <ul style={{ marginTop: '30px' }}>{gymList}</ul>
+    </Container>
   );
 };
 
