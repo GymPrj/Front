@@ -5,6 +5,7 @@ import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
 import RegisterCompany from '../components/auth/RegisterCompany';
 import GymSeach from '../components/GymSeach';
+import TrainerRegister from '../components/TrainerRegister';
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path="/register" exact component={Register} />
         <Route path="/registerCompany" exact component={RegisterCompany} />
         <Route path="/gymSeach" exact component={GymSeach} />
+        <Route path="/trainerRegister" exact component={TrainerRegister} />
       </Switch>
     </BrowserRouter>
   );
