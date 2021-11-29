@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Avatar,
   Button,
   CssBaseline,
   TextField,
@@ -319,9 +318,8 @@ const RegisterCompany = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
           <Typography component="h1" variant="h5">
-            기업 회원가입
+            회원가입
           </Typography>
           <Boxs
             component="form"
@@ -339,7 +337,7 @@ const RegisterCompany = () => {
                     fullWidth
                     id="email"
                     name="email"
-                    label="이메일 주소"
+                    label="이메일"
                     error={emailError !== '' || false}
                   />
                 </Grid>
@@ -363,11 +361,33 @@ const RegisterCompany = () => {
                     type="password"
                     id="rePassword"
                     name="rePassword"
-                    label="비밀번호 재입력"
+                    label="비밀번호 확인"
                     error={passwordError !== '' || false}
                   />
                 </Grid>
                 <FormHelperTexts>{passwordError}</FormHelperTexts>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="gymName"
+                    name="gymName"
+                    label="헬스장 명"
+                    error={gymNameError !== '' || false}
+                  />
+                </Grid>
+                <FormHelperTexts>{gymNameError}</FormHelperTexts>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="ceoName"
+                    name="ceoName"
+                    label="대표 이름"
+                    error={ceoNameError !== '' || false}
+                  />
+                </Grid>
+                <FormHelperTexts>{ceoNameError}</FormHelperTexts>
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -382,28 +402,6 @@ const RegisterCompany = () => {
                   />
                 </Grid>
                 <FormHelperTexts>{businessNumError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="ceoName"
-                    name="ceoName"
-                    label="CEO 이름"
-                    error={ceoNameError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{ceoNameError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="gymName"
-                    name="gymName"
-                    label="헬스장 이름"
-                    error={gymNameError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{gymNameError}</FormHelperTexts>
                 <Grid item xs={4}>
                   <TextField
                     required
@@ -452,7 +450,7 @@ const RegisterCompany = () => {
                 sx={{ mt: 3, mb: 2 }}
                 size="large"
               >
-                회원가입
+                계정 만들기
               </Button>
             </FormControl>
 
@@ -465,7 +463,7 @@ const RegisterCompany = () => {
                   onChange={handleTownList}
                   error={addressError !== '' || false}
                 >
-                  <MenuItem value="none">주소 선택 (시)</MenuItem>
+                  <MenuItem value="none">시</MenuItem>
                   {city}
                 </Selects>
               </Grid>
@@ -477,7 +475,7 @@ const RegisterCompany = () => {
                   onChange={handleTown}
                   error={addressError !== '' || false}
                 >
-                  <MenuItem value="none">구 선택</MenuItem>
+                  <MenuItem value="none">구/군</MenuItem>
                   {town}
                 </Selects>
               </Grid>

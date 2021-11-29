@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Avatar,
   Button,
   CssBaseline,
   TextField,
@@ -235,7 +234,6 @@ const Register = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
@@ -250,12 +248,23 @@ const Register = () => {
                 <Grid item xs={12}>
                   <TextField
                     required
+                    fullWidth
+                    id="name"
+                    name="name"
+                    label="이름"
+                    error={nameError !== '' || false}
+                  />
+                </Grid>
+                <FormHelperTexts>{nameError}</FormHelperTexts>
+                <Grid item xs={12}>
+                  <TextField
+                    required
                     autoFocus
                     fullWidth
                     type="email"
                     id="email"
                     name="email"
-                    label="이메일 주소"
+                    label="이메일"
                     error={emailError !== '' || false}
                   />
                 </Grid>
@@ -279,22 +288,11 @@ const Register = () => {
                     type="password"
                     id="rePassword"
                     name="rePassword"
-                    label="비밀번호 재입력"
+                    label="비밀번호 확인"
                     error={passwordError !== '' || false}
                   />
                 </Grid>
                 <FormHelperTexts>{passwordError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="name"
-                    name="name"
-                    label="이름"
-                    error={nameError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{nameError}</FormHelperTexts>
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -341,7 +339,7 @@ const Register = () => {
                     onChange={handleChange}
                     error={sexError !== '' || false}
                   >
-                    <MenuItem value="none">성별 선택</MenuItem>
+                    <MenuItem value="none">성별</MenuItem>
                     <MenuItem value="MALE">남성</MenuItem>
                     <MenuItem value="FEMALE">여성</MenuItem>
                   </Selects>
@@ -385,7 +383,7 @@ const Register = () => {
                 sx={{ mt: 3, mb: 2 }}
                 size="large"
               >
-                회원가입
+                계정 만들기
               </Button>
             </FormControl>
             <FormHelperTexts>{registerError}</FormHelperTexts>
