@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import {
   Button,
   CssBaseline,
@@ -121,9 +122,32 @@ const TrainerRegister = () => {
     }
   };
 
+  const onClick = async () => {
+    const postData = {
+      email: 'juhwa@naver.com',
+      loginTypeId: 2,
+      password: 'qwer12345',
+    };
+
+    console.log(postData);
+
+    await axios
+      .post('/session/login', postData)
+      .then(function (response) {
+        console.log(response, '성공');
+        // history.push('/login');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <button onClick={onClick} type="button">
+        login
+      </button>
       <Box
         sx={{
           marginTop: 8,
