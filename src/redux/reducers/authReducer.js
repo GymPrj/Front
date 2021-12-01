@@ -1,13 +1,10 @@
 import {
-  // LOGIN_REQUEST,
-  // LOGIN_SUCCESS,
-  // LOGIN_FAILURE,
-  // LOGOUT_REQUEST,
-  // LOGOUT_SUCCESS,
-  // LOGOUT_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  GYM_REGISTER_SUCCESS,
+  GYM_REGISTER_FAILURE,
+  GYM_REGISTER_REQUEST,
 } from '../types';
 
 const initialState = {
@@ -21,6 +18,7 @@ const initialState = {
 const authReducer = (state = initialState, { type, payload } = {}) => {
   switch (type) {
     case REGISTER_REQUEST:
+    case GYM_REGISTER_REQUEST:
       return {
         ...state,
         payload,
@@ -28,6 +26,7 @@ const authReducer = (state = initialState, { type, payload } = {}) => {
         isLoading: true,
       };
     case REGISTER_SUCCESS:
+    case GYM_REGISTER_SUCCESS:
       return {
         ...state,
         ...payload,
@@ -37,6 +36,7 @@ const authReducer = (state = initialState, { type, payload } = {}) => {
         successMsg: '회원가입에 성공하였습니다.',
       };
     case REGISTER_FAILURE:
+    case GYM_REGISTER_FAILURE:
       return {
         ...state,
         ...payload,

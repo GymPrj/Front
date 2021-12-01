@@ -18,7 +18,7 @@ import {
 } from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
-import { REGISTER_REQUEST } from '../../redux/types';
+import { GYM_REGISTER_REQUEST } from '../../redux/types';
 
 const Selects = styled(Select)`
   height: 56px;
@@ -142,10 +142,9 @@ const RegisterCompany = () => {
       tel,
       townId: townSelect,
     };
-    console.log('성공', postData);
 
     dispatch({
-      type: REGISTER_REQUEST,
+      type: GYM_REGISTER_REQUEST,
       payload: postData,
     });
   };
