@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
   Button,
   CssBaseline,
   TextField,
-  FormControl,
   FormControlLabel,
   Checkbox,
   FormHelperText,
@@ -18,6 +18,7 @@ import {
 } from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
+import { REGISTER_REQUEST } from '../../redux/types';
 
 const Selects = styled(Select)`
   height: 56px;
@@ -42,33 +43,6 @@ const FormHelperTextError = styled(FormHelperTexts)`
   margin-bottom: 40px;
 `;
 
-const EmptyArea = styled.div`
-  clear: both;
-  width: 100%;
-  height: 72px;
-`;
-
-const Grids = styled(Grid)`
-  position: relative;
-  margin-top: -212px;
-`;
-
-const Boxs = styled(Box)`
-  position: relative;
-  margin-bottom: 16px;
-  padding-bottom: 124px;
-  &.on_error_box {
-    .on_error {
-      position: relative;
-      top: 20px;
-      margin-bottom: 20px;
-    }
-    .addres_area {
-      margin-top: -232px;
-    }
-  }
-`;
-
 const RegisterCompany = () => {
   const theme = createTheme();
   const [city, setsCity] = useState([]);
@@ -85,9 +59,9 @@ const RegisterCompany = () => {
   const [gymNameError, setGymNameError] = useState('');
   const [telError, setTelError] = useState('');
   const [addressError, setAddressError] = useState('');
-  const [checkError, setCheckError] = useState(false);
-  const [registerError, setRegisterError] = useState('');
-  const history = useHistory();
+  const [detailAddrError, setDetailAddrError] = useState('');
+  const { errorMsg } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const getCityList = async () => {
     // 시 api 리스트 호출
@@ -106,10 +80,6 @@ const RegisterCompany = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    getCityList();
-  }, []);
 
   const handleBusinessNumber = e => {
     const { value } = e.target;
@@ -160,7 +130,7 @@ const RegisterCompany = () => {
     setChecked(event.target.checked);
   };
 
-  const onClick = async data => {
+  const onClick = data => {
     const { ceoName, email, password, gymName, tel } = data;
     const postData = {
       businessNumber,
@@ -172,19 +142,12 @@ const RegisterCompany = () => {
       tel,
       townId: townSelect,
     };
-    console.log(postData);
+    console.log('성공', postData);
 
-    // post
-    await axios
-      .post('/gym/join', postData)
-      .then(function (response) {
-        console.log(response, '성공');
-        history.push('/login');
-      })
-      .catch(function (err) {
-        console.log(err);
-        setRegisterError('회원가입에 실패하였습니다. 다시한번 확인해 주세요.');
-      });
+    dispatch({
+      type: REGISTER_REQUEST,
+      payload: postData,
+    });
   };
 
   const handleSubmit = e => {
@@ -198,18 +161,18 @@ const RegisterCompany = () => {
       rePassword: data.get('rePassword'),
       gymName: data.get('gymName'),
       tel: `${data.get('tel1')}${data.get('tel2')}${data.get('tel3')}`,
+      detailAddress: data.get('detailAddress'),
     };
 
-    const { ceoName, email, password, rePassword, gymName } = joinData;
+    const { ceoName, email, password, rePassword, gymName, detailAddress } =
+      joinData;
 
     // 이메일 유효성 체크
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (!emailRegex.test(email)) {
-      setCheckError(false);
       setEmailError('올바른 이메일 형식이 아닙니다.');
     } else {
-      setCheckError(true);
       setEmailError('');
     }
 
@@ -217,27 +180,23 @@ const RegisterCompany = () => {
     const passwordRegex =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!passwordRegex.test(password)) {
-      setCheckError(false);
       setPasswordState(
         '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!',
       );
     } else {
-      setCheckError(true);
       setPasswordState('');
     }
 
     // 비밀번호 같은지 체크
     if (password !== rePassword) {
-      setCheckError(false);
       setPasswordError('비밀번호가 일치하지 않습니다.');
     } else {
-      setCheckError(true);
       setPasswordError('');
     }
 
+    let isTrue;
     // 사업자번호 유효성 검사
     if (businessNumber.length !== 10) {
-      setCheckError(true);
       setbussinessNumError('사업자 번호 10자리를 입력해주세요.');
     } else {
       let sum = 0;
@@ -247,34 +206,28 @@ const RegisterCompany = () => {
         sum += v * numberMap[i];
       });
       sum += parseInt((keyList[8] * numberMap[8]) / 10, 10);
-      const isTrue = Math.floor(numberMap[9]) === (10 - (sum % 10)) % 10;
+      isTrue = Math.floor(numberMap[9]) === (10 - (sum % 10)) % 10;
 
       if (isTrue) {
-        setCheckError(false);
         setbussinessNumError('');
       } else {
-        setCheckError(true);
         setbussinessNumError('유효한 사업자 번호가 아닙니다.');
       }
+    }
+
+    // 헬스장 이름 체크
+    if (gymName.length < 1) {
+      setGymNameError('헬스장 이름을 입력해주세요.');
+    } else {
+      setGymNameError('');
     }
 
     // ceo 이름 유효성 검사
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!nameRegex.test(ceoName) || ceoName.length < 1) {
-      setCheckError(false);
       setCeoNameError('올바른 이름을 입력해주세요.');
     } else {
-      setCheckError(true);
       setCeoNameError('');
-    }
-
-    // 헬스장 이름 체크
-    if (gymName.length < 1) {
-      setCheckError(false);
-      setGymNameError('헬스장 이름을 입력해주세요.');
-    } else {
-      setCheckError(true);
-      setGymNameError('');
     }
 
     // 연락처 유효성 검사
@@ -282,29 +235,51 @@ const RegisterCompany = () => {
     const tels = `${data.get('tel1')}-${data.get('tel2')}-${data.get('tel3')}`;
 
     if (!patternPhone.test(tels)) {
-      setCheckError(false);
       setTelError('올바른 연락처를 입력해주세요.');
     } else {
-      setCheckError(true);
       setTelError('');
     }
 
     // 주소 선택
     if (citySelct === 'none' || townSelect === 'none') {
-      setCheckError(false);
       setAddressError('주소를 선택해 주세요.');
     } else {
-      setCheckError(true);
       setAddressError('');
     }
 
-    if (!checked) {
-      setCheckError(false);
-      alert('회원가입 약관에 동의해주세요.');
-    } else setCheckError(true);
+    // 상세주소
+    if (detailAddress.length < 1) {
+      setDetailAddrError('상세 주소를 입력해주세요.');
+    } else {
+      setDetailAddrError('');
+    }
 
-    if (checkError) onClick(joinData);
+    if (!checked) alert('회원가입 약관에 동의해주세요.');
+
+    if (
+      emailRegex.test(email) &&
+      passwordRegex.test(password) &&
+      password === rePassword &&
+      nameRegex.test(ceoName) &&
+      ceoName.length >= 1 &&
+      gymName.length >= 1 &&
+      businessNumber.length === 10 &&
+      isTrue &&
+      gymName.length >= 1 &&
+      ceoName.length >= 1 &&
+      patternPhone.test(tels) &&
+      citySelct !== 'none' &&
+      townSelect !== 'none' &&
+      detailAddress.length >= 1 &&
+      checked
+    ) {
+      onClick(joinData);
+    }
   };
+
+  useEffect(() => {
+    getCityList();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -321,140 +296,75 @@ const RegisterCompany = () => {
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
-          <Boxs
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-            className={addressError === '' ? '' : 'on_error_box'}
-          >
-            <FormControl component="fieldset" variant="standard">
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    autoFocus
-                    fullWidth
-                    id="email"
-                    name="email"
-                    label="이메일"
-                    error={emailError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{emailError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    id="password"
-                    name="password"
-                    label="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
-                    error={passwordState !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{passwordState}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="password"
-                    id="rePassword"
-                    name="rePassword"
-                    label="비밀번호 확인"
-                    error={passwordError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{passwordError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="gymName"
-                    name="gymName"
-                    label="헬스장 명"
-                    error={gymNameError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{gymNameError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="ceoName"
-                    name="ceoName"
-                    label="대표 이름"
-                    error={ceoNameError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{ceoNameError}</FormHelperTexts>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    type="businessNumber"
-                    id="businessNumber"
-                    name="businessNumber"
-                    value={businessNumber}
-                    onChange={handleBusinessNumber}
-                    label="사업자 번호 (숫자)"
-                    error={businessNumError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{businessNumError}</FormHelperTexts>
-                <Grid item xs={4}>
-                  <TextField
-                    required
-                    id="tel1"
-                    name="tel1"
-                    label="연락처"
-                    fullWidth
-                    error={telError !== '' || false}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    id="tel2"
-                    name="tel2"
-                    fullWidth
-                    error={telError !== '' || false}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    id="tel3"
-                    name="tel3"
-                    fullWidth
-                    error={telError !== '' || false}
-                  />
-                </Grid>
-                <FormHelperTexts>{telError}</FormHelperTexts>
-                <EmptyArea />
-                <Grid
-                  item
-                  xs={12}
-                  className={addressError === '' ? '' : 'on_error'}
-                >
-                  <FormControlLabel
-                    control={
-                      <Checkbox onChange={handleAgree} color="primary" />
-                    }
-                    label="회원가입 약관에 동의합니다."
-                  />
-                </Grid>
+          <form onSubmit={handleSubmit} style={{ marginTop: '50px' }}>
+            <Box />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoFocus
+                  fullWidth
+                  type="email"
+                  id="email"
+                  name="email"
+                  label="이메일"
+                  error={emailError !== '' || false}
+                />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                size="large"
-              >
-                계정 만들기
-              </Button>
-            </FormControl>
-
-            <Grids container spacing={2} className="addres_area">
+              <FormHelperTexts>{emailError}</FormHelperTexts>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  type="password"
+                  id="password"
+                  name="password"
+                  label="비밀번호 (숫자+영문자+특수문자 8자리 이상)"
+                  error={passwordState !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{passwordState}</FormHelperTexts>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  type="password"
+                  id="rePassword"
+                  name="rePassword"
+                  label="비밀번호 확인"
+                  error={passwordError !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{passwordError}</FormHelperTexts>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="gymName"
+                  name="gymName"
+                  label="헬스장 명"
+                  error={gymNameError !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{gymNameError}</FormHelperTexts>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="ceoName"
+                  name="ceoName"
+                  label="대표 이름"
+                  error={ceoNameError !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{ceoNameError}</FormHelperTexts>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="businessNumber"
+                  name="businessNumber"
+                  value={businessNumber}
+                  onChange={handleBusinessNumber}
+                  label="사업자 번호 (숫자)"
+                  error={businessNumError !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{businessNumError}</FormHelperTexts>
               <Grid item xs={6}>
                 <Selects
                   fullWidth
@@ -480,12 +390,63 @@ const RegisterCompany = () => {
                 </Selects>
               </Grid>
               <FormHelperTexts>{addressError}</FormHelperTexts>
-            </Grids>
-          </Boxs>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="detailAddress"
+                  name="detailAddress"
+                  label="상세주소"
+                  error={detailAddrError !== '' || false}
+                  className={addressError === '' ? '' : 'on_error'}
+                />
+              </Grid>
+              <FormHelperTexts>{detailAddrError}</FormHelperTexts>
+              <Grid item xs={4}>
+                <TextField
+                  id="tel1"
+                  name="tel1"
+                  label="헬스장 번호"
+                  fullWidth
+                  error={telError !== '' || false}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="tel2"
+                  name="tel2"
+                  fullWidth
+                  error={telError !== '' || false}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="tel3"
+                  name="tel3"
+                  fullWidth
+                  error={telError !== '' || false}
+                />
+              </Grid>
+              <FormHelperTexts>{telError}</FormHelperTexts>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox onChange={handleAgree} color="primary" />}
+                  label="회원가입 약관에 동의합니다."
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              size="large"
+            >
+              계정 만들기
+            </Button>
+          </form>
         </Box>
+        <FormHelperTextError>{errorMsg}</FormHelperTextError>
       </Container>
-
-      <FormHelperTextError>{registerError}</FormHelperTextError>
     </ThemeProvider>
   );
 };

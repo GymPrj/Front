@@ -7,13 +7,13 @@ import {
   // LOGOUT_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-  // REGISTER_FAILURE,
+  REGISTER_FAILURE,
 } from '../types';
 
 const initialState = {
   token: null, // jwb 토큰
   isLoading: false,
-  userId: '', // email
+  email: '', // email
   errorMsg: '',
   successMsg: '',
 };
@@ -30,6 +30,21 @@ const authReducer = (state = initialState, { type, payload } = {}) => {
     case REGISTER_SUCCESS:
       return {
         ...state,
+        ...payload,
+        isLoading: false,
+        email: payload.email,
+        errorMsg: '',
+        successMsg: '회원가입에 성공하였습니다.',
+      };
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        ...payload,
+        token: null,
+        user: null,
+        email: null,
+        isLoading: false,
+        errorMsg: payload.data.body.message,
       };
     default:
       return state;

@@ -36,7 +36,7 @@ const Header = () => {
             <Link to="/login">로그인</Link>
           </Button>
           <Button type="button" variant="outlined" sx={{ my: 1, mx: 1 }}>
-            <Link to="/register">회원가입</Link>
+            <Link to="/memberSignUp">회원가입</Link>
           </Button>
         </Toolbar>
       </AppBar>
