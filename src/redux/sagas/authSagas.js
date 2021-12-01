@@ -63,6 +63,6 @@ function* watchgymRegister() {
   yield takeEvery(GYM_REGISTER_REQUEST, gymRegister);
 }
 
-export default function* rootSaga() {
+export default function* authSaga() {
   yield all([fork(watchgymRegister), fork(watchMemberRegister)]);
 }
