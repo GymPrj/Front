@@ -18,7 +18,7 @@ const Router = () => {
         <>
           <Header />
           <Route path="/" exact component={MainPage} />
-          <Route path="/rrainerCreate" exact component={TrainerRegister} />
+          <Route path="/tainerCreate" exact component={TrainerRegister} />
           <Footer />
         </>
       </Switch>

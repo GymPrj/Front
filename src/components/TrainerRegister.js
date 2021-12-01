@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
   CssBaseline,
@@ -15,6 +15,7 @@ import {
   InputLabel,
 } from '@mui/material/';
 import styled from 'styled-components';
+import { TRAINER_ADD_REQUEST } from '../redux/types';
 
 const GTextField = styled(TextField)`
   input::-webkit-outer-spin-button,
@@ -55,8 +56,8 @@ const TrainerRegister = () => {
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
   const [careerError, setCareerError] = useState('');
-  const [checkError, setCheckError] = useState(false);
-  const [registerError, setRegisterError] = useState('');
+  const { errorMsg } = useSelector(state => state.trainer);
+  const dispatch = useDispatch();
 
   const handleSex = event => {
     setSex(event.target.value);
@@ -71,23 +72,10 @@ const TrainerRegister = () => {
       sex,
     };
 
-    console.log(postData);
-
-    // post
-    await axios
-      .post('/trainer', postData)
-      .then(function (response) {
-        console.log(response, '성공');
-        // history.push('/login');
-        setRegisterError('');
-      })
-      .catch(function (err) {
-        console.log(err);
-        setCheckError(false);
-        setRegisterError(
-          '트레이너 등록에 실패하였습니다. 다시한번 확인해 주세요.',
-        );
-      });
+    dispatch({
+      type: TRAINER_ADD_REQUEST,
+      payload: postData,
+    });
   };
 
   const handleSubmit = e => {
@@ -105,42 +93,32 @@ const TrainerRegister = () => {
     const nameRegex = /^[가-힣a-zA-Z]+$/;
     if (!nameRegex.test(name) || name.length < 1) {
       setNameError('올바른 이름을 입력해주세요.');
-      setCheckError(false);
     } else {
       setNameError('');
-      setCheckError(true);
     }
 
     // 나이 체크
     if (age.length < 1) {
       setAgeError('나이를 입력해주세요.');
-      setCheckError(false);
     } else {
       setAgeError('');
-      setCheckError(true);
     }
 
     // 경력 체크
     if (career.length < 1) {
       setCareerError('경력을 입력해주세요.');
-      setCheckError(false);
     } else {
       setCareerError('');
-      setCheckError(true);
     }
 
-    console.log(
-      age,
-      career,
-      name,
-      sex,
-      ageError,
-      careerError,
-      nameError,
-      checkError,
-    );
-
-    if (checkError) onPost(joinData);
+    if (
+      nameRegex.test(name) &&
+      name.length >= 1 &&
+      age.length >= 1 &&
+      career.length >= 1
+    ) {
+      onPost(joinData);
+    }
   };
 
   return (
@@ -239,7 +217,7 @@ const TrainerRegister = () => {
           >
             트레이너 등록
           </Button>
-          <FormHelperTexts>{registerError}</FormHelperTexts>
+          <FormHelperTexts>{errorMsg}</FormHelperTexts>
         </Boxs>
       </Box>
     </Container>

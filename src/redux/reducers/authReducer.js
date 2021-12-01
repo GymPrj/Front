@@ -6,7 +6,7 @@ import {
   // LOGOUT_SUCCESS,
   // LOGOUT_FAILURE,
   REGISTER_REQUEST,
-  REGISTER_SUCCESS,
+  // REGISTER_SUCCESS,
   // REGISTER_FAILURE,
 } from '../types';
 
@@ -18,7 +18,7 @@ const initialState = {
   successMsg: '',
 };
 
-const authReducer = (state = initialState, { type, payload } = {}) => {
+const trainerReducer = (state = initialState, { type, payload } = {}) => {
   switch (type) {
     case REGISTER_REQUEST:
       return {
@@ -27,13 +27,9 @@ const authReducer = (state = initialState, { type, payload } = {}) => {
         errorMsg: '',
         isLoading: true,
       };
-    case REGISTER_SUCCESS:
-      return {
-        ...state,
-      };
     default:
       return state;
   }
 };
 
-export default authReducer;
+export default trainerReducer;
