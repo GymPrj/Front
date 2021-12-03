@@ -3,9 +3,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import MainPage from '../components/MainPage';
 import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
+import RegisterCompany from '../components/auth/RegisterCompany';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
-import RegisterCompany from '../components/auth/RegisterCompany';
 import TrainerRegister from '../components/TrainerRegister';
 
 const Router = () => {
