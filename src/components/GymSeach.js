@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   Container,
@@ -128,26 +129,28 @@ const GymSeach = () => {
           gymData.map(val => {
             return (
               <li key={val.gymName + val.detailAddress}>
-                <div
-                  className="thumbs"
-                  style={{
-                    backgroundImage:
-                      'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                  }}
-                />
-                <div className="info">
-                  {val.gymName && <strong>{val.gymName}</strong>}
-                  {val.detailAddress && (
-                    <button type="button" className="addr">
-                      {val.detailAddress}
-                    </button>
-                  )}
-                  {val.tel && (
-                    <button type="button" className="tel">
-                      {val.tel}
-                    </button>
-                  )}
-                </div>
+                <Link to="/gymDetail/5">
+                  <div
+                    className="thumbs"
+                    style={{
+                      backgroundImage:
+                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
+                    }}
+                  />
+                  <div className="info">
+                    {val.gymName && <strong>{val.gymName}</strong>}
+                    {val.detailAddress && (
+                      <button type="button" className="addr">
+                        {val.detailAddress}
+                      </button>
+                    )}
+                    {val.tel && (
+                      <button type="button" className="tel">
+                        {val.tel}
+                      </button>
+                    )}
+                  </div>
+                </Link>
               </li>
             );
           });

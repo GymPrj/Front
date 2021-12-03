@@ -7,6 +7,7 @@ import RegisterCompany from '../components/auth/RegisterCompany';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import TrainerRegister from '../components/TrainerRegister';
+import GymDetailPage from '../components/GymDetailPage';
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
           <Header />
           <Route path="/" exact component={MainPage} />
           <Route path="/tainerCreate" exact component={TrainerRegister} />
+          <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
           <Footer />
         </>
       </Switch>
