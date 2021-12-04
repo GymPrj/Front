@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
   Container,
@@ -10,6 +11,7 @@ import {
   Button,
 } from '@mui/material/';
 import styled from 'styled-components';
+import { GYM_SEARCH_REQUEST } from '../redux/types';
 
 const GymListArea = styled.ul`
   display: flex;
@@ -84,6 +86,8 @@ const GymSeach = () => {
   const [townSelect, setTownSelect] = useState('none');
   const [gymList, setGymList] = useState([]);
   const [gymName, setGymName] = useState('');
+  const gymSearchLists = useSelector(state => state.gym.gymSearchList);
+  const dispatch = useDispatch();
 
   const getCityList = async () => {
     // 시 api 리스트 호출
@@ -105,7 +109,39 @@ const GymSeach = () => {
 
   useEffect(() => {
     getCityList();
-  }, []);
+
+    const list =
+      gymSearchLists.length > 0 &&
+      gymSearchLists.map(val => {
+        return (
+          <li key={val.gymName + val.detailAddress}>
+            <Link to="/gymDetail/5">
+              <div
+                className="thumbs"
+                style={{
+                  backgroundImage:
+                    'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
+                }}
+              />
+              <div className="info">
+                {val.gymName && <strong>{val.gymName}</strong>}
+                {val.detailAddress && (
+                  <button type="button" className="addr">
+                    {val.detailAddress}
+                  </button>
+                )}
+                {val.tel && (
+                  <button type="button" className="tel">
+                    {val.tel}
+                  </button>
+                )}
+              </div>
+            </Link>
+          </li>
+        );
+      });
+    setGymList(list);
+  }, [gymSearchLists]);
 
   const onClick = async () => {
     const url = {
@@ -119,46 +155,10 @@ const GymSeach = () => {
     if (gymName === '') delete url.params.gymName;
     if (townSelect === 'none') delete url.params.townId;
 
-    await axios
-      .get('gym', url)
-      .then(function (response) {
-        const gymData = response.data.content;
-        console.log(gymData);
-        const list =
-          gymData.length > 0 &&
-          gymData.map(val => {
-            return (
-              <li key={val.gymName + val.detailAddress}>
-                <Link to="/gymDetail/5">
-                  <div
-                    className="thumbs"
-                    style={{
-                      backgroundImage:
-                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                    }}
-                  />
-                  <div className="info">
-                    {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
-                  </div>
-                </Link>
-              </li>
-            );
-          });
-        setGymList(list);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    dispatch({
+      type: GYM_SEARCH_REQUEST,
+      payload: url,
+    });
   };
 
   const handleGymName = e => {
