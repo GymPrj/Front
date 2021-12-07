@@ -8,6 +8,7 @@ import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import TrainerRegister from '../components/TrainerRegister';
 import GymDetailPage from '../components/GymDetailPage';
+import TrainerDetailPage from '../components/TrainerDetailPage';
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
           <Route path="/" exact component={MainPage} />
           <Route path="/tainerCreate" exact component={TrainerRegister} />
           <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
+          <Route path="/trainerDetail" exact component={TrainerDetailPage} />
           <Footer />
         </>
       </Switch>

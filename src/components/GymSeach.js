@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
@@ -11,7 +11,7 @@ import {
   Button,
 } from '@mui/material/';
 import styled from 'styled-components';
-import { GYM_SEARCH_REQUEST } from '../redux/types';
+import { GYM_SEARCH_REQUEST, GYM_DETAIL_INFO_REQUEST } from '../redux/types';
 
 const GymListArea = styled.ul`
   display: flex;
@@ -20,36 +20,40 @@ const GymListArea = styled.ul`
     width: 33.3%;
     margin: 0 15px 15px 0;
     border: 1px solid rgba(0, 0, 0, 0.23);
-    .thumbs {
+    & > button {
       width: 100%;
-      height: 150px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-    }
-    .info {
-      padding: 0 20px 30px;
-      strong {
-        display: block;
-        margin: 40px 0 25px;
-        font-size: 1.2rem;
-        text-align: center;
-      }
-      button {
-        padding: 6px 10px;
-        border: 0;
-        background-color: #1976d2;
-        color: #fff;
-        border-radius: 4px;
-        &.addr {
-          width: 100%;
-        }
-        &.tel {
-          width: 50%;
-        }
-      }
-    }
+      border: 0;
+      background-color: transparent;
 
+      .thumbs {
+        width: 100%;
+        height: 150px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+      .info {
+        padding: 0 20px 30px;
+        strong {
+          display: block;
+          margin: 40px 0 25px;
+          font-size: 1.2rem;
+          text-align: center;
+        }
+        p {
+          padding: 6px 10px;
+          background-color: #1976d2;
+          color: #fff;
+          border-radius: 4px;
+          &.addr {
+            width: 100%;
+          }
+          &.tel {
+            width: 50%;
+          }
+        }
+      }
+    }
     &.empty {
       margin: 50px 0 70px;
       border: 0;
@@ -88,6 +92,8 @@ const GymSeach = () => {
   const [gymName, setGymName] = useState('');
   const gymSearchLists = useSelector(state => state.gym.gymSearchList);
   const dispatch = useDispatch();
+  // eslint-disable-next-line
+  const history = useHistory();
 
   const getCityList = async () => {
     // 시 api 리스트 호출
@@ -107,6 +113,15 @@ const GymSeach = () => {
       });
   };
 
+  // 클릭한 헬스장의 정보를 redux에 저장해주는 이벤트
+  const handleGymDetail = val => {
+    dispatch({
+      type: GYM_DETAIL_INFO_REQUEST,
+      payload: val,
+    });
+    history.push(`/gymDetail/${val.gymId}`);
+  };
+
   useEffect(() => {
     getCityList();
 
@@ -115,7 +130,8 @@ const GymSeach = () => {
       gymSearchLists.map(val => {
         return (
           <li key={val.gymName + val.detailAddress}>
-            <Link to="/gymDetail/5">
+            {/* <Link to={`/gymDetail/${val.gymId}`}> */}
+            <button type="button" onClick={() => handleGymDetail(val)}>
               <div
                 className="thumbs"
                 style={{
@@ -126,17 +142,18 @@ const GymSeach = () => {
               <div className="info">
                 {val.gymName && <strong>{val.gymName}</strong>}
                 {val.detailAddress && (
-                  <button type="button" className="addr">
+                  <p type="button" className="addr">
                     {val.detailAddress}
-                  </button>
+                  </p>
                 )}
                 {val.tel && (
-                  <button type="button" className="tel">
+                  <p type="button" className="tel">
                     {val.tel}
-                  </button>
+                  </p>
                 )}
               </div>
-            </Link>
+              {/* </Link> */}
+            </button>
           </li>
         );
       });

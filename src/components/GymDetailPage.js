@@ -1,30 +1,120 @@
-import React, { useEffect } from 'react';
-// import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, Container, Button } from '@mui/material/';
+import styled from 'styled-components';
 import { TRAINER_LIST_REQUEST } from '../redux/types';
+
+const Boxs = styled(Box)`
+  margin: 100px 0 200px;
+  h1 {
+    margin-bottom: 30px;
+  }
+  .thumbs {
+    width: 100%;
+    height: 330px;
+    margin-bottom: 60px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  .gym_info {
+    padding-bottom: 20px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid #ddd;
+  }
+`;
+
+const Ul = styled.ul`
+  li {
+    display: flex;
+    align-items: flex-end;
+    &:not(:last-child) {
+      margin-bottom: 60px;
+    }
+    .trainer_pic {
+      width: 40%;
+      height: 160px;
+      margin-right: 40px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  }
+`;
 
 const GymDetailPage = () => {
   const gymTrainerList = useSelector(state => state.gym.trainerList);
+  const gymDetailInfo = useSelector(state => state.gym.gymDetailInfo);
+  const [trainerList, setTainerList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  // eslint-disable-next-line
+  const history = useHistory();
 
-  useEffect(() => {
-    //   axios.get(`/trainer/gym/5`).then(res => {
-    //     console.log(res.data);
-    //   });
+  const { gymName, ceoName, tel, memberCount, detailAddress } = gymDetailInfo;
 
-    const id = 5;
+  const handleTrainerList = useCallback(async () => {
+    // 헬스장 id
     dispatch({
       type: TRAINER_LIST_REQUEST,
-      payload: id,
+      payload: gymDetailInfo.gymId,
     });
 
-    console.log(gymTrainerList);
-  }, [dispatch]);
+    setIsLoading(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) handleTrainerList();
+    else setTainerList(gymTrainerList);
+  }, [isLoading, trainerList, gymTrainerList]);
+
+  const Li = trainerList.map(val => {
+    return (
+      <li key={val.name + val.age}>
+        <div
+          className="trainer_pic"
+          style={{
+            backgroundImage:
+              'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
+          }}
+        />
+        <p>{val.name}</p>
+      </li>
+    );
+  });
 
   return (
-    <div>
-      <p>GymDetailPage</p>
-    </div>
+    <Container component="main" maxWidth="md">
+      <Boxs>
+        <div
+          className="thumbs"
+          style={{
+            backgroundImage:
+              'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
+          }}
+        />
+        <div className="gym_info">
+          <h1>{gymName}</h1>
+          {detailAddress && <p>주소 {detailAddress}</p>}
+          {tel && <p>전화번호 {tel}</p>}
+          {ceoName && <p>대표이름 {ceoName}</p>}
+          <p>회원 수 {memberCount}</p>
+        </div>
+        <div className="trainer_info">
+          <h1>강사진</h1>
+          <Ul>{Li}</Ul>
+        </div>
+        <Button
+          type="button"
+          variant="contained"
+          size="medium"
+          style={{ margin: '80px auto 0', display: 'block' }}
+        >
+          <Link to="/tainerCreate">트레이너 등록</Link>
+        </Button>
+      </Boxs>
+    </Container>
   );
 };
 export default GymDetailPage;

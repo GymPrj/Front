@@ -7,6 +7,9 @@ import {
   TRAINER_LIST_REQUEST,
   TRAINER_LIST_FAILURE,
   TRAINER_LIST_SUCCESS,
+  GYM_DETAIL_INFO_REQUEST,
+  GYM_DETAIL_INFO_FAILURE,
+  GYM_DETAIL_INFO_SUCCESS,
 } from '../types';
 
 // gym search
@@ -61,6 +64,37 @@ function* watchTrainerList() {
   yield takeEvery(TRAINER_LIST_REQUEST, trainerList);
 }
 
+// gym detail info
+const gymDetailInfoAPI = req => {
+  // return axios.get(`/trainer/gym/${req}`);
+  return req;
+};
+
+function* gymDetailInfo(action) {
+  try {
+    const result = yield call(gymDetailInfoAPI, action.payload);
+    console.log(result, 'trainer list Data');
+    yield put({
+      type: GYM_DETAIL_INFO_SUCCESS,
+      payload: result,
+    });
+  } catch (e) {
+    console.log('error', e);
+    yield put({
+      type: GYM_DETAIL_INFO_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchGymDetailInfo() {
+  yield takeEvery(GYM_DETAIL_INFO_REQUEST, gymDetailInfo);
+}
+
 export default function* gymSagas() {
-  yield all([fork(watchGymSearch), fork(watchTrainerList)]);
+  yield all([
+    fork(watchGymSearch),
+    fork(watchTrainerList),
+    fork(watchGymDetailInfo),
+  ]);
 }
