@@ -15,8 +15,8 @@ const Router = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
-        <Route path="/registerCompany" exact component={RegisterCompany} />
+        <Route path="/memberSignUp" exact component={Register} />
+        <Route path="/gymSignUp" exact component={RegisterCompany} />
         <>
           <Header />
           <Route path="/" exact component={MainPage} />

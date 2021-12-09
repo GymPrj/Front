@@ -8,7 +8,6 @@ import {
   Typography,
   GlobalStyles,
 } from '@mui/material';
-// import styled from 'styled-components';
 
 const Header = () => {
   return (
@@ -25,7 +24,7 @@ const Header = () => {
       >
         <Toolbar sx={{ flexWrap: 'wrap' }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            세상 모든 헬스장
+            <Link to="/">세상 모든 헬스장</Link>
           </Typography>
           <Button
             type="button"
@@ -36,7 +35,7 @@ const Header = () => {
             <Link to="/login">로그인</Link>
           </Button>
           <Button type="button" variant="outlined" sx={{ my: 1, mx: 1 }}>
-            <Link to="/register">회원가입</Link>
+            <Link to="/memberSignUp">회원가입</Link>
           </Button>
         </Toolbar>
       </AppBar>

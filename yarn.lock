@@ -2020,8 +2020,11 @@
     loader-utils "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@testing-library/dom@^7.26.0":
 =======
+=======
+>>>>>>> 331f6c8f0614cd56847f7d67e0caece24c446cea
 "@testing-library/dom@^7.28.1":
 >>>>>>> d6e1499332c8bcccd6c74d58aac2a0ea93f2d324
   version "7.31.2"
@@ -2996,8 +2999,11 @@ axobject-query@^2.2.0:
   integrity sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 babel-eslint@10.1.0, babel-eslint@^10.1.0:
 =======
+=======
+>>>>>>> 331f6c8f0614cd56847f7d67e0caece24c446cea
 babel-eslint@^10.1.0:
 >>>>>>> d6e1499332c8bcccd6c74d58aac2a0ea93f2d324
   version "10.1.0"
@@ -7682,7 +7688,10 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+<<<<<<< HEAD
 >>>>>>> d6e1499332c8bcccd6c74d58aac2a0ea93f2d324
+=======
+>>>>>>> 331f6c8f0614cd56847f7d67e0caece24c446cea
 
 loader-runner@^2.4.0:
   version "2.4.0"
@@ -11981,7 +11990,10 @@ web-vitals@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-1.1.2.tgz#06535308168986096239aa84716e68b4c6ae6d1c"
   integrity sha512-PFMKIY+bRSXlMxVAQ+m2aw9c/ioUYfDgrYot0YUa+/xa0sakubWhSDyxAKwzymvXVdF4CZI71g06W+mqhzu6ig==
+<<<<<<< HEAD
 >>>>>>> d6e1499332c8bcccd6c74d58aac2a0ea93f2d324
+=======
+>>>>>>> 331f6c8f0614cd56847f7d67e0caece24c446cea
 
 webidl-conversions@^5.0.0:
   version "5.0.0"
@@ -12389,6 +12401,7 @@ ws@^6.2.1:
 
 ws@^7.4.6:
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "7.5.6"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.6.tgz#e59fc509fb15ddfb65487ee9765c5a51dec5fe7b"
   integrity sha512-6GLgCqo2cy2A2rjCNFlxQS6ZljG/coZfZXclldI8FB/1G3CCI36Zd8xy2HrFVACi8tfk5XrgLQEk+P0Tnz9UcA==
@@ -12397,6 +12410,11 @@ ws@^7.4.6:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
   integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
 >>>>>>> d6e1499332c8bcccd6c74d58aac2a0ea93f2d324
+=======
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
+  integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
+>>>>>>> 331f6c8f0614cd56847f7d67e0caece24c446cea
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
