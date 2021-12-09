@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
-import { TRAINER_LIST_REQUEST } from '../redux/types';
+import { TRAINER_LIST_REQUEST, TRAINER_DETAIL_SUCCESS } from '../redux/types';
 
 const Boxs = styled(Box)`
   margin: 100px 0 200px;
@@ -27,18 +27,23 @@ const Boxs = styled(Box)`
 
 const Ul = styled.ul`
   li {
-    display: flex;
-    align-items: flex-end;
     &:not(:last-child) {
       margin-bottom: 60px;
     }
-    .trainer_pic {
-      width: 40%;
-      height: 160px;
-      margin-right: 40px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
+    button {
+      display: flex;
+      align-items: flex-end;
+      border: 0;
+      width: 100%;
+      background-color: transparent;
+      .trainer_pic {
+        width: 40%;
+        height: 160px;
+        margin-right: 40px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
     }
   }
 `;
@@ -52,13 +57,14 @@ const GymDetailPage = () => {
   // eslint-disable-next-line
   const history = useHistory();
 
-  const { gymName, ceoName, tel, memberCount, detailAddress } = gymDetailInfo;
+  const { gymName, ceoName, tel, memberCount, detailAddress, gymId } =
+    gymDetailInfo;
 
   const handleTrainerList = useCallback(async () => {
-    // 헬스장 id
+    // 헬스장 id에 맞는 트레이너 리스트 get 요청 및 저장
     dispatch({
       type: TRAINER_LIST_REQUEST,
-      payload: gymDetailInfo.gymId,
+      payload: gymId,
     });
 
     setIsLoading(true);
@@ -69,17 +75,29 @@ const GymDetailPage = () => {
     else setTainerList(gymTrainerList);
   }, [isLoading, trainerList, gymTrainerList]);
 
+  const handleTrainerDetail = trainer => {
+    // 선택한 트레이너 정보 store 저장
+    dispatch({
+      type: TRAINER_DETAIL_SUCCESS,
+      payload: trainer,
+    });
+
+    history.push(`/trainerDetail/${gymId}/${trainer.name}`);
+  };
+
   const Li = trainerList.map(val => {
     return (
       <li key={val.name + val.age}>
-        <div
-          className="trainer_pic"
-          style={{
-            backgroundImage:
-              'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-          }}
-        />
-        <p>{val.name}</p>
+        <button type="button" onClick={() => handleTrainerDetail(val)}>
+          <div
+            className="trainer_pic"
+            style={{
+              backgroundImage:
+                'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
+            }}
+          />
+          <p>{val.name}</p>
+        </button>
       </li>
     );
   });

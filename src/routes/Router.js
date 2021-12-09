@@ -22,7 +22,11 @@ const Router = () => {
           <Route path="/" exact component={MainPage} />
           <Route path="/tainerCreate" exact component={TrainerRegister} />
           <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
-          <Route path="/trainerDetail" exact component={TrainerDetailPage} />
+          <Route
+            path="/trainerDetail/:gymId/:name"
+            exact
+            component={TrainerDetailPage}
+          />
           <Footer />
         </>
       </Switch>
