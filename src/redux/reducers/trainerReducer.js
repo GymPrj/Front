@@ -1,13 +1,8 @@
 import {
-  TRAINER_ADD_REQUEST,
-  TRAINER_ADD_FAILURE,
-  TRAINER_ADD_SUCCESS,
   TRAINER_DETAIL_REQUEST,
   TRAINER_DETAIL_FAILURE,
   TRAINER_DETAIL_SUCCESS,
-  TRAINER_DELETE_REQUEST,
-  TRAINER_DELETE_FAILURE,
-  TRAINER_DELETE_SUCCESS,
+  TRAINER_EDIT_MODE,
 } from '../types';
 
 const initialState = {
@@ -15,34 +10,24 @@ const initialState = {
   isLoading: false,
   userId: '', // email
   errorMsg: '',
-  successMsg: '',
-  trainers: [],
+  // trainers: [],
   trainerDetail: {},
+  editMode: false,
 };
 
 const authReducer = (state = initialState, { type, payload } = {}) => {
   switch (type) {
-    case TRAINER_ADD_REQUEST:
     case TRAINER_DETAIL_REQUEST:
-    case TRAINER_DELETE_REQUEST:
       return {
         ...state,
         errorMsg: '',
         isLoading: true,
       };
-    case TRAINER_ADD_FAILURE:
     case TRAINER_DETAIL_FAILURE:
-    case TRAINER_DELETE_FAILURE:
       return {
         ...state,
         loading: false,
         errorMsg: payload.data.body.message,
-      };
-    case TRAINER_ADD_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        errorMsg: '',
       };
     case TRAINER_DETAIL_SUCCESS:
       return {
@@ -51,12 +36,12 @@ const authReducer = (state = initialState, { type, payload } = {}) => {
         errorMsg: '',
         trainerDetail: payload,
       };
-    case TRAINER_DELETE_SUCCESS:
+    case TRAINER_EDIT_MODE:
       return {
         ...state,
         loading: false,
         errorMsg: '',
-        // trainerDetail: payload,
+        editMode: payload,
       };
     default:
       return state;

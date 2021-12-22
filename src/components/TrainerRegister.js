@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
   Button,
@@ -16,7 +17,7 @@ import {
   InputLabel,
 } from '@mui/material/';
 import styled from 'styled-components';
-import { TRAINER_ADD_REQUEST } from '../redux/types';
+import { TRAINER_ADD_REQUEST, TRAINER_EDIT_REQUEST } from '../redux/types';
 
 const GTextField = styled(TextField)`
   input::-webkit-outer-spin-button,
@@ -53,19 +54,45 @@ const FormHelperTexts = styled(FormHelperText)`
 `;
 
 const TrainerRegister = () => {
-  const [sex, setSex] = useState('MALE');
+  const [inputs, setInputs] = useState({
+    sex: 'MALE',
+    name: '',
+    age: '',
+    career: '',
+  });
   const [nameError, setNameError] = useState('');
   const [ageError, setAgeError] = useState('');
   const [careerError, setCareerError] = useState('');
   const { errorMsg } = useSelector(state => state.trainer);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const gymId = useSelector(state => state.gym.gymDetailInfo.gymId);
+  const editMode = useSelector(state => state.trainer.editMode);
+  /* eslint-disable no-unused-vars */
+  const trainerDetail = useSelector(state => state.trainer.trainerDetail);
+  const { pathname } = useLocation();
 
-  const handleSex = event => {
-    setSex(event.target.value);
+  const { sex, name, age, career } = inputs;
+
+  useEffect(() => {
+    const isEditMode = pathname.includes('tainerEdit');
+    if (editMode && isEditMode) {
+      setInputs({
+        sex: trainerDetail.sex,
+        name: trainerDetail.name,
+        age: String(trainerDetail.age),
+        career: String(trainerDetail.career),
+      });
+    }
+  }, [editMode]);
+
+  const onChange = e => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  const onPost = async data => {
-    const { age, career, name } = data;
+  const onPost = () => {
+    const { id } = trainerDetail;
+
     const postData = {
       age: parseInt(age, 10),
       career: parseInt(career, 10),
@@ -73,22 +100,21 @@ const TrainerRegister = () => {
       sex,
     };
 
-    dispatch({
-      type: TRAINER_ADD_REQUEST,
-      payload: postData,
-    });
+    if (editMode) {
+      dispatch({
+        type: TRAINER_EDIT_REQUEST,
+        payload: { postData, history, id },
+      });
+    } else {
+      dispatch({
+        type: TRAINER_ADD_REQUEST,
+        payload: { postData, history, gymId },
+      });
+    }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    const data = new FormData(e.currentTarget);
-    const joinData = {
-      age: data.get('age'),
-      career: data.get('career'),
-      name: data.get('name'),
-    };
-    const { age, career, name } = joinData;
 
     // 이름 유효성 검사
     const nameRegex = /^[가-힣a-zA-Z]+$/;
@@ -118,7 +144,7 @@ const TrainerRegister = () => {
       age.length >= 1 &&
       career.length >= 1
     ) {
-      onPost(joinData);
+      onPost();
     }
   };
 
@@ -129,13 +155,12 @@ const TrainerRegister = () => {
       password: 'qwer12345',
     };
 
-    console.log(postData);
-
     await axios
       .post('/session/login', postData)
       .then(function (response) {
         console.log(response, '성공');
         // history.push('/login');
+        history.push();
       })
       .catch(function (err) {
         console.log(err);
@@ -157,7 +182,7 @@ const TrainerRegister = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          트레이너 등록/수정
+          트레이너 {editMode ? '수정' : '등록'}하기
         </Typography>
         <Boxs
           component="form"
@@ -176,7 +201,9 @@ const TrainerRegister = () => {
                 fullWidth
                 id="name"
                 name="name"
+                onChange={onChange}
                 variant="standard"
+                value={name}
                 error={nameError !== '' || false}
               />
             </Grid>
@@ -190,7 +217,7 @@ const TrainerRegister = () => {
                 type="number"
                 id="sex"
                 name="sex"
-                onChange={handleSex}
+                onChange={onChange}
                 value={sex}
               >
                 <FormControlLabel value="MALE" control={<Radio />} label="남" />
@@ -211,6 +238,8 @@ const TrainerRegister = () => {
                 type="number"
                 id="age"
                 name="age"
+                value={age}
+                onChange={onChange}
                 variant="standard"
                 error={ageError !== '' || false}
               />
@@ -225,7 +254,9 @@ const TrainerRegister = () => {
                 fullWidth
                 type="number"
                 id="career"
+                value={career}
                 name="career"
+                onChange={onChange}
                 variant="standard"
                 error={careerError !== '' || false}
               />
@@ -239,7 +270,7 @@ const TrainerRegister = () => {
             sx={{ mt: 3, mb: 2 }}
             size="large"
           >
-            트레이너 등록
+            트레이너 {editMode ? '수정' : '등록'}
           </Button>
           <FormHelperTexts>{errorMsg}</FormHelperTexts>
         </Boxs>

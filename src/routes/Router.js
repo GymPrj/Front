@@ -21,6 +21,11 @@ const Router = () => {
           <Header />
           <Route path="/" exact component={MainPage} />
           <Route path="/tainerCreate" exact component={TrainerRegister} />
+          <Route
+            path="/tainerEdit/:trainerId"
+            exact
+            component={TrainerRegister}
+          />
           <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
           <Route
             path="/trainerDetail/:gymId/:name"

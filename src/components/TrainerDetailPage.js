@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
@@ -27,14 +27,18 @@ const Boxs = styled(Box)`
 
 const TrainerDetailPage = () => {
   const gymTrainerList = useSelector(state => state.trainer.trainerDetail);
-  const { name, age, career } = gymTrainerList;
+  const gymId = useSelector(state => state.gym.gymDetailInfo.gymId);
+  const { id, name, age, career } = gymTrainerList;
   const dispatch = useDispatch();
-  // console.log(gymTrainerList);
+  const history = useHistory();
 
+  const handleTrainerEdit = () => {
+    history.push(`/tainerEdit/${id}`);
+  };
   const handleTrainerRemove = () => {
     dispatch({
       type: TRAINER_DELETE_REQUEST,
-      payload: gymTrainerList,
+      payload: { id, history, gymId },
     });
   };
 
@@ -57,6 +61,7 @@ const TrainerDetailPage = () => {
       </Boxs>
       <Button
         type="button"
+        onClick={handleTrainerEdit}
         variant="contained"
         sx={{ my: 1, mx: 1 }}
         disableElevation
@@ -65,7 +70,7 @@ const TrainerDetailPage = () => {
       </Button>
       <Button
         type="button"
-        onclick={handleTrainerRemove}
+        onClick={handleTrainerRemove}
         variant="contained"
         sx={{ my: 1, mx: 1 }}
         disableElevation
