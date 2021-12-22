@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+/* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
@@ -90,9 +91,8 @@ const GymSeach = () => {
   const [townSelect, setTownSelect] = useState('none');
   const [gymList, setGymList] = useState([]);
   const [gymName, setGymName] = useState('');
-  const gymSearchLists = useSelector(state => state.gym.gymSearchList);
+  const gymSearchLists = useSelector(state => state.blacklists.gymSearchList);
   const dispatch = useDispatch();
-  // eslint-disable-next-line
   const history = useHistory();
 
   const getCityList = async () => {
@@ -125,7 +125,10 @@ const GymSeach = () => {
   useEffect(() => {
     getCityList();
 
+    console.log(gymSearchLists);
+
     const list =
+      gymSearchLists &&
       gymSearchLists.length > 0 &&
       gymSearchLists.map(val => {
         return (
@@ -265,7 +268,7 @@ const GymSeach = () => {
       </Grid>
       <br />
       <GymListArea style={{ marginTop: '30px' }}>
-        {gymList.length > 0 ? (
+        {gymList && gymList.length > 0 ? (
           gymList
         ) : (
           <li className="empty">목록이 없습니다.</li>

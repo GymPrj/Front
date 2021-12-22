@@ -20,7 +20,7 @@ const gymSearchAPI = req => {
 function* gymSearch(action) {
   try {
     const result = yield call(gymSearchAPI, action.payload);
-    // console.log(result, 'gym search Data');
+    console.log(result, 'gym search Data');
     yield put({
       type: GYM_SEARCH_SUCCESS,
       payload: result.data,

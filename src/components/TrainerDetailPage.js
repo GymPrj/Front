@@ -1,8 +1,9 @@
 import React from 'react';
 // import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Box, Container } from '@mui/material/';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
+import { TRAINER_DELETE_REQUEST } from '../redux/types';
 
 const Boxs = styled(Box)`
   margin: 100px 0 200px;
@@ -27,6 +28,15 @@ const Boxs = styled(Box)`
 const TrainerDetailPage = () => {
   const gymTrainerList = useSelector(state => state.trainer.trainerDetail);
   const { name, age, career } = gymTrainerList;
+  const dispatch = useDispatch();
+  // console.log(gymTrainerList);
+
+  const handleTrainerRemove = () => {
+    dispatch({
+      type: TRAINER_DELETE_REQUEST,
+      payload: gymTrainerList,
+    });
+  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -45,6 +55,23 @@ const TrainerDetailPage = () => {
         </div>
         <div className="trainer_info">댓글 부분</div>
       </Boxs>
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ my: 1, mx: 1 }}
+        disableElevation
+      >
+        수정
+      </Button>
+      <Button
+        type="button"
+        onclick={handleTrainerRemove}
+        variant="contained"
+        sx={{ my: 1, mx: 1 }}
+        disableElevation
+      >
+        삭제
+      </Button>
     </Container>
   );
 };

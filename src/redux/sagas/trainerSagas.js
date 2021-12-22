@@ -7,6 +7,9 @@ import {
   TRAINER_DETAIL_REQUEST,
   TRAINER_DETAIL_FAILURE,
   TRAINER_DETAIL_SUCCESS,
+  TRAINER_DELETE_REQUEST,
+  TRAINER_DELETE_FAILURE,
+  TRAINER_DELETE_SUCCESS,
 } from '../types';
 
 // trainer Create
@@ -62,6 +65,36 @@ function* watchTrainerDetail() {
   yield takeEvery(TRAINER_DETAIL_REQUEST, trainerDetail);
 }
 
+// trainer delete
+const trainerDeleteAPI = req => {
+  return axios.delete(`/trainer/${req}`);
+};
+
+function* trainerDelete(action) {
+  try {
+    const result = yield call(trainerDeleteAPI, action.payload);
+    console.log(result, 'trainer delete Data');
+    yield put({
+      type: TRAINER_DELETE_SUCCESS,
+      payload: result,
+    });
+  } catch (e) {
+    console.log('error', e);
+    yield put({
+      type: TRAINER_DELETE_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchTrainerDelete() {
+  yield takeEvery(TRAINER_DELETE_REQUEST, trainerDelete);
+}
+
 export default function* trainerSagas() {
-  yield all([fork(watchtrainerCreate), fork(watchTrainerDetail)]);
+  yield all([
+    fork(watchtrainerCreate),
+    fork(watchTrainerDetail),
+    fork(watchTrainerDelete),
+  ]);
 }

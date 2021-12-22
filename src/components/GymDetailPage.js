@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
-import { TRAINER_LIST_REQUEST, TRAINER_DETAIL_SUCCESS } from '../redux/types';
+import { TRAINER_LIST_REQUEST, TRAINER_DETAIL_REQUEST } from '../redux/types';
 
 const Boxs = styled(Box)`
   margin: 100px 0 200px;
@@ -78,7 +78,7 @@ const GymDetailPage = () => {
   const handleTrainerDetail = trainer => {
     // 선택한 트레이너 정보 store 저장
     dispatch({
-      type: TRAINER_DETAIL_SUCCESS,
+      type: TRAINER_DETAIL_REQUEST,
       payload: trainer,
     });
 
