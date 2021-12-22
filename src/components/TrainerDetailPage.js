@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
-import { TRAINER_DELETE_REQUEST } from '../redux/types';
+import { TRAINER_DELETE_REQUEST, TRAINER_EDIT_MODE } from '../redux/types';
 
 const Boxs = styled(Box)`
   margin: 100px 0 200px;
@@ -33,6 +33,10 @@ const TrainerDetailPage = () => {
   const history = useHistory();
 
   const handleTrainerEdit = () => {
+    dispatch({
+      type: TRAINER_EDIT_MODE,
+      payload: true,
+    });
     history.push(`/tainerEdit/${id}`);
   };
   const handleTrainerRemove = () => {

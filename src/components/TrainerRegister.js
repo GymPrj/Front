@@ -71,11 +71,11 @@ const TrainerRegister = () => {
   /* eslint-disable no-unused-vars */
   const trainerDetail = useSelector(state => state.trainer.trainerDetail);
   const { pathname } = useLocation();
+  const isEditMode = pathname.includes('tainerEdit');
 
   const { sex, name, age, career } = inputs;
 
   useEffect(() => {
-    const isEditMode = pathname.includes('tainerEdit');
     if (editMode && isEditMode) {
       setInputs({
         sex: trainerDetail.sex,
@@ -100,10 +100,10 @@ const TrainerRegister = () => {
       sex,
     };
 
-    if (editMode) {
+    if (editMode && isEditMode) {
       dispatch({
         type: TRAINER_EDIT_REQUEST,
-        payload: { postData, history, id },
+        payload: { postData, history, id, gymId },
       });
     } else {
       dispatch({
@@ -182,7 +182,7 @@ const TrainerRegister = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          트레이너 {editMode ? '수정' : '등록'}하기
+          트레이너 {isEditMode && editMode ? '수정' : '등록'}하기
         </Typography>
         <Boxs
           component="form"
@@ -270,7 +270,7 @@ const TrainerRegister = () => {
             sx={{ mt: 3, mb: 2 }}
             size="large"
           >
-            트레이너 {editMode ? '수정' : '등록'}
+            트레이너 {editMode && isEditMode ? '수정' : '등록'}
           </Button>
           <FormHelperTexts>{errorMsg}</FormHelperTexts>
         </Boxs>

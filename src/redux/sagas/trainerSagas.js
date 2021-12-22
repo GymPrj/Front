@@ -105,7 +105,7 @@ function* watchTrainerDelete() {
 
 // trainer edit
 const trainerEditAPI = req => {
-  return axios.put(`/trainer/${req.id}`);
+  return axios.put(`/trainer/${req.id}`, req.postData);
 };
 
 function* trainerEdit(action) {
@@ -121,6 +121,7 @@ function* trainerEdit(action) {
       type: TRAINER_EDIT_MODE,
       payload: false,
     });
+
     alert('성공적으로 수정되었습니다.');
     history.push(`/gymDetail/${gymId}`);
   } catch (e) {
