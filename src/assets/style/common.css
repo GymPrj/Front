@@ -1,0 +1,238 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
+  src: url('../font/Montserrat/montserrat-v21-latin-300.eot');
+  src: url('../font/Montserrat/montserrat-v21-latin-300.eot?#iefix')
+      format('embedded-opentype'),
+    url('../font/Montserrat/montserrat-v21-latin-300.woff2') format('woff2'),
+    url('../font/Montserrat/montserrat-v21-latin-300.woff') format('woff'),
+    url('../font/Montserrat/montserrat-v21-latin-300.ttf') format('truetype');
+}
+/* montserrat-regular - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
+  src: url('../font/Montserrat/montserrat-v21-latin-regular.eot');
+  src: url('../font/Montserrat/montserrat-v21-latin-regular.eot?#iefix')
+      format('embedded-opentype'),
+    url('../font/Montserrat/montserrat-v21-latin-regular.woff2') format('woff2'),
+    url('../font/Montserrat/montserrat-v21-latin-regular.woff') format('woff'),
+    url('../font/Montserrat/montserrat-v21-latin-regular.ttf')
+      format('truetype');
+}
+/* montserrat-700 - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  unicode-range: U+0041-005A, U+0061-007A, U+0030-0039;
+  src: url('../font/Montserrat/montserrat-v21-latin-700.eot');
+  src: url('../font/Montserrat/montserrat-v21-latin-700.eot?#iefix')
+      format('embedded-opentype'),
+    url('../font/Montserrat/montserrat-v21-latin-700.woff2') format('woff2'),
+    url('../font/Montserrat/montserrat-v21-latin-700.woff') format('woff'),
+    url('../font/Montserrat/montserrat-v21-latin-700.ttf') format('truetype');
+}
+/* noto-sans-kr-300 */
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 300;
+  unicode-range: U+AC00- U+D7A3;
+  src: url('../font/NotoSansKr/NotoSansKR-Light.otf');
+  src: url('../font/NotoSansKr/NotoSansKR-Light.woff2') format('woff2'),
+    url('../font/NotoSansKr/NotoSansKR-Light.woff') format('woff'),
+    url('../font/NotoSansKr/NotoSansKR-Light.otf') format('truetype');
+}
+
+/* noto-sans-kr-500 */
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 500;
+  unicode-range: U+AC00- U+D7A3;
+  src: url('../font/NotoSansKr/NotoSansKR-Regular.otf');
+  src: url('../font/NotoSansKr/NotoSansKR-Regular.woff2') format('woff2'),
+    url('../font/NotoSansKr/NotoSansKR-Regular.woff') format('woff'),
+    url('../font/NotoSansKr/NotoSansKR-Regular.otf') format('truetype');
+}
+
+/* noto-sans-kr-700 */
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 700;
+  unicode-range: U+AC00- U+D7A3;
+  src: url('../font/NotoSansKr/NotoSansKR-Bold.otf');
+  src: url('../font/NotoSansKr/NotoSansKR-Bold.woff2') format('woff2'),
+    url('../font/NotoSansKr/NotoSansKR-Bold.woff') format('woff'),
+    url('../font/NotoSansKr/NotoSansKR-Bold.otf') format('truetype');
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html {
+  overflow-y: scroll;
+}
+
+body {
+  width: 100%;
+  background-color: #fff;
+  font-family: 'Montserrat', 'Noto Sans KR', 'sans-serif';
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+input:-ms-input-placeholder {
+  color: #a8a8a8;
+}
+
+::selection {
+  background: #c6cbff;
+}
+::-moz-selection {
+  background: #c6cbff;
+}
+::-webkit-selection {
+  background: #c6cbff;
+}
+
+@media screen and (max-width: 767px) {
+  #root {
+    padding-top: 50px;
+  }
+}
+@media screen and (min-width: 768px) {
+}

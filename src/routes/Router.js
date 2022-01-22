@@ -9,15 +9,17 @@ import Footer from '../components/common/Footer';
 const Router = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
-        <>
-          <Header />
-          <Route path="/" exact component={MainPage} />
-          <Footer />
-        </>
-      </Switch>
+      <>
+        <Header />
+        <div id="wrapper">
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
+            <Route path="/" exact component={MainPage} />
+          </Switch>
+        </div>
+        <Footer />
+      </>
     </BrowserRouter>
   );
 };
