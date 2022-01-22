@@ -5,6 +5,7 @@ import Login from '../components/auth/Login';
 import Register from '../components/auth/Register';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
+import RegisterCompany from '../components/auth/RegisterCompany';
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
           <Switch>
             <Route path="/login" exact component={Login} />
             <Route path="/memberSignUp" exact component={Register} />
+            <Route path="/gymSignUp" exact component={RegisterCompany} />
             <Route path="/" exact component={MainPage} />
           </Switch>
         </div>

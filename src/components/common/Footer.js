@@ -26,6 +26,14 @@ const FooterContainer = styled.footer`
     & > .footer_info {
       border-top: 1px solid #4e4e4e;
       color: #fafafa;
+      .cs_info {
+        & > p {
+          color: #999;
+        }
+        li {
+          opacity: 0.8;
+        }
+      }
     }
   }
   @media ${props => props.theme.pc} {
@@ -47,11 +55,12 @@ const FooterContainer = styled.footer`
       }
       & > .footer_info {
         & > div {
+          position: relative;
           display: flex;
           justify-content: space-between;
           width: 1280px;
           margin: 0 auto;
-          padding: 40px 0 50px;
+          padding: 40px 0 60px;
           font-size: 15px;
           img {
             width: 180px;
@@ -60,11 +69,6 @@ const FooterContainer = styled.footer`
           .company_info {
             li {
               margin-bottom: 9px;
-              &:last-child {
-                padding-top: 6px;
-                color: #999;
-                font-size: 14px;
-              }
             }
           }
           .cs_info {
@@ -83,12 +87,65 @@ const FooterContainer = styled.footer`
                 padding-top: 7px;
               }
             }
+            & > p {
+              position: absolute;
+              left: 0;
+              margin-top: -13px;
+              font-size: 14px;
+            }
           }
         }
       }
     }
   }
   @media ${props => props.theme.mobile} {
+    section {
+      & > ul {
+        justify-content: center;
+        padding: 14px 0;
+        li {
+          font-size: 14px;
+          margin: 0 8px;
+          &:not(:last-child):after {
+            height: 10px;
+            top: 3px;
+            right: -8px;
+          }
+        }
+      }
+      & > .footer_info {
+        padding: 30px 0 45px;
+        text-align: center;
+        & > div {
+          font-size: 14px;
+          img {
+            width: 160px;
+            margin-bottom: 22px;
+          }
+          .company_info {
+            li {
+              margin-bottom: 8px;
+            }
+          }
+          .cs_info {
+            h2 {
+              margin: 30px 0 5px;
+              font-size: 19px;
+            }
+            h3 {
+              padding-bottom: 4 px;
+              font-size: 17px;
+            }
+            li {
+              margin-top: 6px;
+            }
+            & > p {
+              margin-top: 30px;
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -122,7 +179,6 @@ const Footer = () => {
                 <li>상호명 : 세상모든헬스장</li>
                 <li>사업자등록번호 : XXX-XXX-XXXX</li>
                 <li>매일 : oooo@gmail.com</li>
-                <li>COPYRIGHTⒸ 2021 ALL RIGHTS RESERVED</li>
               </ul>
             </article>
             <article className="cs_info">
@@ -133,6 +189,7 @@ const Footer = () => {
                 <li>점심 PM 12 : 00 - PM 01 : 30</li>
                 <li>휴뮤 : 토, 일, 공휴일</li>
               </ul>
+              <p>COPYRIGHTⒸ 2021 ALL RIGHTS RESERVED</p>
             </article>
           </div>
         </section>

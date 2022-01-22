@@ -229,6 +229,13 @@ input:-ms-input-placeholder {
   background: #c6cbff;
 }
 
+input,
+select,
+option,
+button {
+  font-family: 'Noto Sans KR', 'sans-serif';
+}
+
 @media screen and (max-width: 767px) {
   #root {
     padding-top: 50px;
