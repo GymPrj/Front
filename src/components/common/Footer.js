@@ -39,7 +39,7 @@ const FooterContainer = styled.footer`
   @media ${props => props.theme.pc} {
     section {
       & > ul {
-        width: 1280px;
+        width: ${props => props.theme.desktopWidth};
         margin: 0 auto;
         height: 50px;
         li {
@@ -58,7 +58,7 @@ const FooterContainer = styled.footer`
           position: relative;
           display: flex;
           justify-content: space-between;
-          width: 1280px;
+          width: ${props => props.theme.desktopWidth};
           margin: 0 auto;
           padding: 40px 0 60px;
           font-size: 15px;

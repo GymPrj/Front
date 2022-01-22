@@ -22,7 +22,7 @@ const HeaderContainer = styled.header`
       display: none;
     }
     & > section {
-      width: 1280px;
+      width: ${props => props.theme.desktopWidth};
       margin: 0 auto;
       .logo {
         img {
