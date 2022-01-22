@@ -13,28 +13,30 @@ import TrainerDetailPage from '../components/TrainerDetailPage';
 const Router = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login" exact component={Login} />
-        <Route path="/memberSignUp" exact component={Register} />
-        <Route path="/gymSignUp" exact component={RegisterCompany} />
-        <>
-          <Header />
-          <Route path="/" exact component={MainPage} />
-          <Route path="/tainerCreate" exact component={TrainerRegister} />
-          <Route
-            path="/tainerEdit/:trainerId"
-            exact
-            component={TrainerRegister}
-          />
-          <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
-          <Route
-            path="/trainerDetail/:gymId/:name"
-            exact
-            component={TrainerDetailPage}
-          />
-          <Footer />
-        </>
-      </Switch>
+      <>
+        <Header />
+        <div id="wrapper">
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <Route path="/memberSignUp" exact component={Register} />
+            <Route path="/gymSignUp" exact component={RegisterCompany} />
+            <Route path="/" exact component={MainPage} />
+            <Route path="/tainerCreate" exact component={TrainerRegister} />
+            <Route
+              path="/tainerEdit/:trainerId"
+              exact
+              component={TrainerRegister}
+            />
+            <Route path="/gymDetail/:gymId" exact component={GymDetailPage} />
+            <Route
+              path="/trainerDetail/:gymId/:name"
+              exact
+              component={TrainerDetailPage}
+            />
+          </Switch>
+        </div>
+        <Footer />
+      </>
     </BrowserRouter>
   );
 };
