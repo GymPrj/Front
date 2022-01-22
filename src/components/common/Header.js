@@ -7,6 +7,7 @@ const HeaderContainer = styled.header`
   width: 100%;
   background-color: #fff;
   border-bottom: 1px solid #c4c4c4;
+  z-index: 99;
   & > section {
     display: flex;
     justify-content: space-between;
@@ -17,6 +18,7 @@ const HeaderContainer = styled.header`
     color: ${props => props.theme.mainPurpleColor};
   }
   @media ${props => props.theme.pc} {
+    position: relative;
     height: 100px;
     .mo_btn {
       display: none;
@@ -40,7 +42,6 @@ const HeaderContainer = styled.header`
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 99;
     height: 50px;
     & > section {
       padding: 0 20px;

@@ -23,7 +23,6 @@
   },
   "plugins": ["react", "react-hooks", "prettier"],
   "rules": {
-    "import/no-unresolved": "off",
     "prettier/prettier": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/state-in-constructor": "off",

@@ -11,15 +11,15 @@ import { history } from './redux/reducers';
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <PersistGate loading={null} persistor={persistor}>
             <Router />
-          </ThemeProvider>
-        </PersistGate>
-      </ConnectedRouter>
-    </Provider>
+          </PersistGate>
+        </ConnectedRouter>
+      </Provider>
+    </ThemeProvider>
   );
 };
 

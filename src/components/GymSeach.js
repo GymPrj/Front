@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import dummy from '../assets/img/slide.jpg';
 import searchIcon from '../assets/img/search.svg';
+import { GYM_DETAIL_INFO_REQUEST } from '../redux/types';
 
 const MainContainer = styled.div`
   background-color: #000;
@@ -102,36 +105,12 @@ const GymListArea = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     & > li {
-      /* margin: 0 15px 15px 0; */
       .thumbs {
         width: 100%;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
       }
-      /* 
-      .info {
-        padding: 0 20px 30px;
-        strong {
-          display: block;
-          margin: 40px 0 25px;
-          font-size: 1.2rem;
-          text-align: center;
-        }
-        button {
-          padding: 6px 10px;
-          border: 0;
-          background-color: #1976d2;
-          color: #fff;
-          border-radius: 4px;
-          &.addr {
-            width: 100%;
-          }
-          &.tel {
-            width: 50%;
-          }
-        }
-      } */
 
       &.empty {
         margin: 50px 0 70px;
@@ -170,6 +149,8 @@ const GymSeach = () => {
   const [townSelect, setTownSelect] = useState('none');
   const [gymList, setGymList] = useState([]);
   const [gymName, setGymName] = useState('');
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const getCityList = async () => {
     // 시 api 리스트 호출
@@ -193,6 +174,14 @@ const GymSeach = () => {
     getCityList();
   }, []);
 
+  const moveToDetail = info => {
+    dispatch({
+      type: GYM_DETAIL_INFO_REQUEST,
+      payload: info,
+    });
+    history.push(`/gymDetail/${info.id}`);
+  };
+
   const onClick = async () => {
     const url = {
       params: {
@@ -210,12 +199,13 @@ const GymSeach = () => {
       .then(function (response) {
         const gymData = response.data.content;
         console.log(gymData);
+
         const list =
           gymData.length > 0 &&
           gymData.map(val => {
             return (
-              <>
-                <li key={val.gymName + val.detailAddress}>
+              <li key={val.gymName + val.detailAddress}>
+                <button type="button" onClick={() => moveToDetail(val)}>
                   <div
                     className="thumbs"
                     style={{
@@ -225,107 +215,11 @@ const GymSeach = () => {
                   />
                   <div className="info">
                     {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
+                    {val.detailAddress && <p>{val.detailAddress}</p>}
+                    {val.tel && <p>{val.tel}</p>}
                   </div>
-                </li>
-                <li key={val.gymName + val.detailAddress}>
-                  <div
-                    className="thumbs"
-                    style={{
-                      backgroundImage:
-                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                    }}
-                  />
-                  <div className="info">
-                    {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
-                  </div>
-                </li>
-                <li key={val.gymName + val.detailAddress}>
-                  <div
-                    className="thumbs"
-                    style={{
-                      backgroundImage:
-                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                    }}
-                  />
-                  <div className="info">
-                    {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
-                  </div>
-                </li>
-                <li key={val.gymName + val.detailAddress}>
-                  <div
-                    className="thumbs"
-                    style={{
-                      backgroundImage:
-                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                    }}
-                  />
-                  <div className="info">
-                    {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
-                  </div>
-                </li>
-                <li key={val.gymName + val.detailAddress}>
-                  <div
-                    className="thumbs"
-                    style={{
-                      backgroundImage:
-                        'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-                    }}
-                  />
-                  <div className="info">
-                    {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && (
-                      <button type="button" className="addr">
-                        {val.detailAddress}
-                      </button>
-                    )}
-                    {val.tel && (
-                      <button type="button" className="tel">
-                        {val.tel}
-                      </button>
-                    )}
-                  </div>
-                </li>
-              </>
+                </button>
+              </li>
             );
           });
         setGymList(list);
@@ -391,21 +285,11 @@ const GymSeach = () => {
               건강한 생활을 시작하세요!
             </h1>
             <section>
-              <select
-                fullWidth
-                id="cityId"
-                value={citySelct}
-                onChange={handleTownList}
-              >
+              <select id="cityId" value={citySelct} onChange={handleTownList}>
                 <option value="none">시</option>
                 {city}
               </select>
-              <select
-                fullWidth
-                id="townId"
-                value={townSelect}
-                onChange={handleTown}
-              >
+              <select id="townId" value={townSelect} onChange={handleTown}>
                 <option value="none">구/군</option>
                 {town}
               </select>
@@ -418,7 +302,6 @@ const GymSeach = () => {
                 />
                 <button
                   type="button"
-                  fullWidth
                   variant="contained"
                   size="large"
                   onClick={onClick}
