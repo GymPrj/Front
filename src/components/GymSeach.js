@@ -153,6 +153,7 @@ const GymListArea = styled.div`
     & > li {
       button {
         width: 100%;
+        padding: 0;
         border: 0;
         background-color: transparent;
         text-align: left;
@@ -219,7 +220,6 @@ const GymListArea = styled.div`
         width: calc(50% - 5px);
         margin-bottom: 15px;
         button {
-          padding: 0;
           .thumbs {
             height: 0;
             padding-bottom: 100%;
@@ -284,7 +284,7 @@ const GymSeach = () => {
       type: GYM_DETAIL_INFO_REQUEST,
       payload: info,
     });
-    history.push(`/gymDetail/${info.id}`);
+    history.push(`/gymDetail/${info.gymId}`);
   };
 
   const onClick = async () => {

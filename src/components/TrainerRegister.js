@@ -2,55 +2,133 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Button,
-  CssBaseline,
-  TextField,
-  Grid,
-  Box,
-  Typography,
-  Container,
-  FormHelperText,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  InputLabel,
-} from '@mui/material/';
 import styled from 'styled-components';
 import { TRAINER_ADD_REQUEST, TRAINER_EDIT_REQUEST } from '../redux/types';
 
-const GTextField = styled(TextField)`
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+const TrainerContainer = styled.section`
+  input[type='text'],
   input[type='number'] {
-    -moz-appearance: textfield;
-  }
-`;
-
-const Boxs = styled(Box)`
-  position: relative;
-  margin-bottom: 16px;
-  padding-bottom: 124px;
-  &.on_error_box {
-    .on_error {
-      position: relative;
-      top: 20px;
-      margin-bottom: 20px;
-    }
-    .addres_area {
-      margin-top: -232px;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #c4c4c4;
+    outline: none;
+    transition: 0.2s ease border;
+    &:focus {
+      border-color: ${props => props.theme.subDarkColor} !important;
     }
   }
-`;
-
-const FormHelperTexts = styled(FormHelperText)`
-  width: 100%;
-  padding-left: 16px;
-  font-weight: 700;
-  color: #d32f2f;
+  & > h1 {
+    text-align: center;
+  }
+  & > form {
+    li {
+      clear: both;
+      margin-bottom: 22px;
+      &.sex {
+        span {
+          margin-bottom: 15px;
+        }
+        label {
+          position: relative;
+          display: flex;
+          cursor: pointer;
+          float: left;
+          font-weight: 500;
+          &:first-of-type {
+            margin-right: 20px;
+          }
+          input {
+            position: absolute;
+            left: -9999px;
+            &:checked + p:before {
+              box-shadow: inset 0 0 0 4px ${props => props.theme.subRedColor};
+            }
+          }
+          p {
+            display: flex;
+            align-items: center;
+            transition: 0.25s ease;
+            &:before {
+              content: '';
+              display: flex;
+              flex-shrink: 0;
+              background-color: #fff;
+              width: 15px;
+              height: 15px;
+              border-radius: 50%;
+              margin-right: 0.375em;
+              transition: 0.25s ease;
+              box-shadow: inset 0 0 0 1.5px #b3b3b3;
+            }
+          }
+        }
+      }
+      & > span {
+        display: block;
+        font-weight: 700;
+      }
+      & > p {
+        margin: 5px 0 8px;
+        color: red;
+        font-size: 12px;
+      }
+      input[type='text'],
+      input[type='number'] {
+        height: 30px;
+        &::placeholder {
+          color: #c4c4c4;
+        }
+      }
+    }
+    .send_btn {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      font-size: 16px;
+      background-color: ${props => props.theme.mainPurpleColor};
+      color: #fff;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  }
+  @media ${props => props.theme.pc} {
+    width: 350px;
+    margin: 80px auto 120px;
+    & > h1 {
+      margin-bottom: 40px;
+      font-size: 24px;
+    }
+    & > form {
+      li {
+        &.sex {
+          height: 55px;
+        }
+        & > span {
+          margin-bottom: 7px;
+          font-size: 17px;
+        }
+      }
+    }
+  }
+  @media ${props => props.theme.mobile} {
+    padding: 0 20px 80px;
+    & > h1 {
+      margin: 60px 0 30px;
+      font-size: 22px;
+    }
+    & > form {
+      li {
+        &.sex {
+          height: 50px;
+        }
+        & > span {
+          margin-bottom: 7px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
 `;
 
 const TrainerRegister = () => {
@@ -116,27 +194,23 @@ const TrainerRegister = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
+    console.log(inputs);
+
     // 이름 유효성 검사
     const nameRegex = /^[가-힣a-zA-Z]+$/;
-    if (!nameRegex.test(name) || name.length < 1) {
+    if (!nameRegex.test(name) || name.length < 1)
       setNameError('올바른 이름을 입력해주세요.');
-    } else {
-      setNameError('');
-    }
+    else setNameError('');
 
     // 나이 체크
-    if (age.length < 1) {
-      setAgeError('나이를 입력해주세요.');
-    } else {
-      setAgeError('');
-    }
+    if (age.length < 1) setAgeError('나이를 입력해주세요.');
+    else if (Number(age) < 0) setAgeError('올바른 나이를 입력해주세요.');
+    else setAgeError('');
 
     // 경력 체크
-    if (career.length < 1) {
-      setCareerError('경력을 입력해주세요.');
-    } else {
-      setCareerError('');
-    }
+    if (career.length < 1) setCareerError('경력을 입력해주세요.');
+    else if (Number(career) < 0) setCareerError('올바른 경력을 입력해주세요.');
+    else setCareerError('');
 
     if (
       nameRegex.test(name) &&
@@ -168,114 +242,88 @@ const TrainerRegister = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <button onClick={onClick} type="button">
+    <TrainerContainer>
+      {/* <button onClick={onClick} type="button">
         login
-      </button>
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          트레이너 {isEditMode && editMode ? '수정' : '등록'}하기
-        </Typography>
-        <Boxs
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={{ mt: 3 }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <InputLabel shrink htmlFor="name">
-                이름
-              </InputLabel>
-              <TextField
-                required
-                autoFocus
-                fullWidth
-                id="name"
-                name="name"
-                onChange={onChange}
-                variant="standard"
-                value={name}
-                error={nameError !== '' || false}
-              />
-            </Grid>
-            <FormHelperTexts id="name-text">{nameError}</FormHelperTexts>
-            <Grid item xs={12}>
-              <InputLabel shrink htmlFor="sex">
-                성별
-              </InputLabel>
-              <RadioGroup
-                row
-                type="number"
-                id="sex"
+      </button> */}
+      <h1>트레이너 {isEditMode && editMode ? '수정' : '등록'}</h1>
+      <form onSubmit={handleSubmit}>
+        <ul>
+          <li>
+            <span>이름</span>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              onChange={onChange}
+              value={name}
+              style={{
+                borderColor: nameError.length > 0 ? 'red' : '#c4c4c4',
+              }}
+            />
+            <p id="name-text">{nameError}</p>
+          </li>
+          <li className="sex">
+            <span>성별</span>
+            <label htmlFor="MALE">
+              <input
+                type="radio"
+                id="MALE"
                 name="sex"
+                value="MALE"
+                checked={sex === 'MALE'}
                 onChange={onChange}
-                value={sex}
-              >
-                <FormControlLabel value="MALE" control={<Radio />} label="남" />
-                <FormControlLabel
-                  value="FEMALE"
-                  control={<Radio />}
-                  label="여"
-                />
-              </RadioGroup>
-            </Grid>
-            <Grid item xs={12}>
-              <InputLabel shrink htmlFor="age">
-                나이 (숫자만 입력)
-              </InputLabel>
-              <GTextField
-                required
-                fullWidth
-                type="number"
-                id="age"
-                name="age"
-                value={age}
-                onChange={onChange}
-                variant="standard"
-                error={ageError !== '' || false}
               />
-            </Grid>
-            <FormHelperTexts>{ageError}</FormHelperTexts>
-            <Grid item xs={12}>
-              <InputLabel shrink htmlFor="career">
-                경력 (숫자만 입력)
-              </InputLabel>
-              <GTextField
-                required
-                fullWidth
-                type="number"
-                id="career"
-                value={career}
-                name="career"
+              <p>남</p>
+            </label>
+            <label htmlFor="FEMALE">
+              <input
+                type="radio"
+                id="FEMALE"
+                name="sex"
+                value="FEMALE"
                 onChange={onChange}
-                variant="standard"
-                error={careerError !== '' || false}
               />
-            </Grid>
-            <FormHelperTexts>{careerError}</FormHelperTexts>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            size="large"
-          >
-            트레이너 {editMode && isEditMode ? '수정' : '등록'}
-          </Button>
-          <FormHelperTexts>{errorMsg}</FormHelperTexts>
-        </Boxs>
-      </Box>
-    </Container>
+              <p>여</p>
+            </label>
+          </li>
+          <li>
+            <span>나이</span>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={age}
+              onChange={onChange}
+              placeholder="(숫자)"
+              style={{
+                borderColor: ageError.length > 0 ? 'red' : '#c4c4c4',
+              }}
+            />
+            <p>{ageError}</p>
+          </li>
+          <li>
+            <span>경력</span>
+            <input
+              type="number"
+              id="career"
+              value={career}
+              name="career"
+              onChange={onChange}
+              placeholder="(숫자)"
+              style={{
+                borderColor: careerError.length > 0 ? 'red' : '#c4c4c4',
+              }}
+            />
+            <p>{careerError}</p>
+          </li>
+        </ul>
+        <button type="submit" className="send_btn">
+          {editMode && isEditMode ? '수정' : '등록'}하기
+        </button>
+        <p>{errorMsg}</p>
+      </form>
+    </TrainerContainer>
   );
 };
 

@@ -13,7 +13,7 @@ const RegisterContainer = styled.section`
     outline: none;
     transition: 0.2s ease border;
     &:focus {
-      border-color: ${props => props.theme.mainPurpleColor};
+      border-color: ${props => props.theme.mainPurpleColor} !important;
     }
   }
   & > .tit {
