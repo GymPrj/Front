@@ -10,10 +10,6 @@ import { GYM_DETAIL_INFO_REQUEST } from '../redux/types';
 const MainContainer = styled.div`
   background-color: #000;
   & > .main_slider {
-    width: ${props => props.theme.desktopWidth};
-    margin: 0 auto;
-    display: flex;
-    align-items: top;
     .addres_area {
       position: relative;
       color: #fff;
@@ -31,6 +27,9 @@ const MainContainer = styled.div`
         & > div {
           position: relative;
           button {
+            position: absolute;
+            top: 14px;
+            margin-left: -40px;
             border: 0;
             background-color: transparent;
             cursor: pointer;
@@ -38,14 +37,15 @@ const MainContainer = styled.div`
         }
       }
     }
-    .thumb_area {
-      background: url(${dummy}) no-repeat center / cover;
-    }
   }
   @media ${props => props.theme.pc} {
     & > .main_slider {
       position: relative;
+      display: flex;
+      align-items: top;
+      width: ${props => props.theme.desktopWidth};
       height: 550px;
+      margin: 0 auto;
       & > li {
         width: 50%;
         h1 {
@@ -58,9 +58,14 @@ const MainContainer = styled.div`
           right: 0;
           top: 0;
           padding: 70px 40px;
+          background-repeat: no-repeat;
+          background-size: cover;
           p {
             margin-top: 12px;
             font-size: 20px;
+          }
+          img {
+            display: none;
           }
         }
         &.addres_area {
@@ -80,65 +85,165 @@ const MainContainer = styled.div`
             input {
               width: 408px;
             }
-            & > div {
-              button {
-                position: absolute;
-                top: 14px;
-                margin-left: -40px;
-              }
-            }
           }
         }
       }
     }
   }
   @media ${props => props.theme.mobile} {
+    & > .main_slider {
+      & > li {
+        background-image: none !important;
+        &.thumb_area {
+          position: relative;
+          img {
+            width: 100%;
+          }
+          & > div {
+            position: absolute;
+            left: 20px;
+            top: 25px;
+            h1 {
+              margin-bottom: 8px;
+              font-size: 20px;
+              line-height: 1.3;
+            }
+            p {
+              font-size: 16px;
+            }
+          }
+        }
+        &.addres_area {
+          padding: 20px 20px 0;
+          h1 {
+            display: none;
+          }
+          & > section {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            select,
+            input {
+              margin-bottom: 20px;
+              font-size: 14px;
+              height: 44px;
+            }
+            #cityId {
+              margin-right: 20px;
+            }
+            select {
+              width: calc(50% - 10px);
+            }
+            & > div,
+            input {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
 const GymListArea = styled.div`
-  & > h1 {
-    font-size: 32px;
-  }
   & > ul {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     & > li {
-      .thumbs {
+      button {
         width: 100%;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
+        border: 0;
+        background-color: transparent;
+        text-align: left;
+        font-family: 'Montserrat', 'Noto Sans KR', 'sans-serif';
+        cursor: pointer;
+        .thumbs {
+          width: 100%;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;
+        }
       }
-
       &.empty {
-        margin: 50px 0 70px;
         border: 0;
         width: 100%;
         text-align: center;
       }
     }
   }
-
   @media ${props => props.theme.pc} {
     width: ${props => props.theme.desktopWidth};
     margin: 80px auto;
     & > h1 {
       margin-bottom: 70px;
+      font-size: 32px;
     }
     & > ul {
       display: flex;
       flex-wrap: wrap;
       & > li {
-        width: calc(25% - 15px);
+        width: calc(25% - 5px);
+        margin-bottom: 15px;
         .thumbs {
           height: 200px;
+        }
+        .info {
+          padding: 15px 10px;
+          strong {
+            font-size: 17px;
+          }
+          p {
+            margin: 8px 0 1px;
+            font-size: 14px;
+          }
+          span {
+            font-size: 15px;
+          }
+        }
+        &.empty {
+          margin: 40px 0 80px;
         }
       }
     }
   }
   @media ${props => props.theme.mobile} {
+    padding-bottom: 50px;
+    & > h1 {
+      font-size: 20px;
+      padding: 25px 20px 18px;
+    }
+    & > ul {
+      justify-content: space-between;
+      & > li {
+        width: calc(50% - 5px);
+        margin-bottom: 15px;
+        button {
+          padding: 0;
+          .thumbs {
+            height: 0;
+            padding-bottom: 100%;
+          }
+          .info {
+            padding: 12px 10px 5px;
+            strong {
+              font-size: 16px;
+            }
+            p {
+              margin: 8px 0 1px;
+              font-size: 13px;
+            }
+            span {
+              font-size: 14px;
+            }
+          }
+        }
+        &.empty {
+          margin: 60px 0 40px;
+          font-size: 14px;
+        }
+      }
+    }
   }
 `;
 
@@ -215,8 +320,9 @@ const GymSeach = () => {
                   />
                   <div className="info">
                     {val.gymName && <strong>{val.gymName}</strong>}
-                    {val.detailAddress && <p>{val.detailAddress}</p>}
-                    {val.tel && <p>{val.tel}</p>}
+                    {/* {val.detailAddress && <p>{val.detailAddress}</p>} */}
+                    <p>서울시 송파구</p>
+                    {val.tel && <span>{val.tel}</span>}
                   </div>
                 </button>
               </li>
@@ -272,12 +378,18 @@ const GymSeach = () => {
     <>
       <MainContainer>
         <ul className="main_slider">
-          <li className="thumb_area">
-            <h1>
-              추울 때 해야 제 맛, <br />
-              지금 바로 운동 시작!
-            </h1>
-            <p>잠든 나의 몸을 깨워 봄 맞이 준비</p>
+          <li
+            className="thumb_area"
+            style={{ backgroundImage: `url(${dummy})` }}
+          >
+            <img src={dummy} alt="" />
+            <div>
+              <h1>
+                추울 때 해야 제 맛, <br />
+                지금 바로 운동 시작!
+              </h1>
+              <p>잠든 나의 몸을 깨워 봄 맞이 준비</p>
+            </div>
           </li>
           <li className="addres_area">
             <h1>
