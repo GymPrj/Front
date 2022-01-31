@@ -1,50 +1,143 @@
 import React, { useEffect, useState, useCallback } from 'react';
+// eslint-disable-next-line
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, Button } from '@mui/material/';
 import styled from 'styled-components';
 import { TRAINER_LIST_REQUEST, TRAINER_DETAIL_REQUEST } from '../redux/types';
+import GymDetailInfo from './GymDetailInfo';
 
-const Boxs = styled(Box)`
-  margin: 100px 0 200px;
-  h1 {
-    margin-bottom: 30px;
+const GymContainer = styled.section`
+  @media ${props => props.theme.pc} {
+    width: 1280px;
+    margin: 0 auto;
+    & > .gym_info {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .gym_detail {
+      h1 {
+        margin-bottom: 50px;
+        font-size: 24px;
+      }
+    }
   }
-  .thumbs {
-    width: 100%;
-    height: 330px;
-    margin-bottom: 60px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+  @media ${props => props.theme.mobile} {
+    .gym_detail {
+      h1 {
+        font-size: 20px;
+      }
+    }
   }
-  .gym_info {
-    padding-bottom: 20px;
-    margin-bottom: 60px;
-    border-bottom: 1px solid #ddd;
+  .btn_area {
+    text-align: center;
+    a {
+      display: inline-block;
+      height: 46px;
+      line-height: 46px;
+      background-color: ${props => props.theme.mainPurpleColor};
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+  }
+  @media ${props => props.theme.pc} {
+    .btn_area {
+      margin: 80px 0 100px;
+      a {
+        width: 150px;
+        margin: 0 20px;
+      }
+    }
+  }
+  @media ${props => props.theme.mobile} {
+    .gym_info {
+      .gym_info {
+        padding: 0 15px;
+      }
+    }
+    .gym_detail {
+      padding: 0 15px;
+    }
+    .btn_area {
+      max-width: 360px;
+      padding: 0 10px;
+      margin: 50px auto 75px;
+      a {
+        width: calc(50% - 15px);
+        &:first-child {
+          margin-right: 10px;
+        }
+        &:nth-child(2) {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+`;
+
+const Tab = styled.div`
+  @media ${props => props.theme.pc} {
+    margin: 40px 0 50px;
+    border-bottom: 2px solid #c4c4c4;
+    button {
+      position: relative;
+      margin-right: 50px;
+      padding: 0 0 5px;
+      cursor: pointer;
+      border: 0;
+      background-color: transparent;
+      font-size: 18px;
+      font-weight: 700;
+      &.active {
+        color: ${props => props.theme.mainPurpleColor};
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -2px;
+          width: 100%;
+          height: 2px;
+          background-color: ${props => props.theme.mainPurpleColor};
+        }
+      }
+    }
+  }
+  @media ${props => props.theme.mobile} {
+    display: none;
   }
 `;
 
 const Ul = styled.ul`
   li {
     &:not(:last-child) {
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
     button {
       display: flex;
-      align-items: flex-end;
       border: 0;
-      width: 100%;
+      padding: 0;
+      align-items: center;
       background-color: transparent;
+      cursor: pointer;
+      font-weight: 700;
       .trainer_pic {
-        width: 40%;
-        height: 160px;
-        margin-right: 40px;
+        width: 90px;
+        height: 90px;
+        margin-right: 30px;
+        border-radius: 100%;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
       }
     }
+  }
+  @media ${props => props.theme.pc} {
+    button {
+      font-size: 17px;
+    }
+  }
+  @media ${props => props.theme.mobile} {
   }
 `;
 
@@ -53,6 +146,7 @@ const GymDetailPage = () => {
   const gymDetailInfo = useSelector(state => state.gym.gymDetailInfo);
   const [trainerList, setTainerList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [menu, setMenu] = useState(0);
   const dispatch = useDispatch();
   // eslint-disable-next-line
   const history = useHistory();
@@ -85,7 +179,7 @@ const GymDetailPage = () => {
     history.push(`/trainerDetail/${gymId}/${trainer.name}`);
   };
 
-  const Li = trainerList.map(val => {
+  const TrainerLists = trainerList.map(val => {
     return (
       <li key={val.name + val.age}>
         <button type="button" onClick={() => handleTrainerDetail(val)}>
@@ -102,37 +196,57 @@ const GymDetailPage = () => {
     );
   });
 
+  const changeMenu = index => {
+    setMenu(index);
+  };
+
+  const TrainerInfo = (
+    <div className="trainer_info">
+      <h1>트레이너 소개</h1>
+      <Ul>{TrainerLists}</Ul>
+    </div>
+  );
+
+  const GtmPlace = <div className="gym_place">헬스장 장소</div>;
+
+  const menuList = {
+    0: TrainerInfo,
+    1: GtmPlace,
+  };
+
   return (
-    <Container component="main" maxWidth="md">
-      <Boxs>
-        <div
-          className="thumbs"
-          style={{
-            backgroundImage:
-              'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
-          }}
+    <GymContainer>
+      <article className="gym_info">
+        <GymDetailInfo
+          gymName={gymName}
+          ceoName={ceoName}
+          tel={tel}
+          memberCount={memberCount}
+          detailAddress={detailAddress}
         />
-        <div className="gym_info">
-          <h1>{gymName}</h1>
-          {detailAddress && <p>주소 {detailAddress}</p>}
-          {tel && <p>전화번호 {tel}</p>}
-          {ceoName && <p>대표이름 {ceoName}</p>}
-          <p>회원 수 {memberCount}</p>
-        </div>
-        <div className="trainer_info">
-          <h1>강사진</h1>
-          <Ul>{Li}</Ul>
-        </div>
-        <Button
+      </article>
+      <Tab>
+        <button
           type="button"
-          variant="contained"
-          size="medium"
-          style={{ margin: '80px auto 0', display: 'block' }}
+          onClick={() => changeMenu(0)}
+          className={`${menu === 0 ? 'active' : ''}`}
         >
-          <Link to="/tainerCreate">트레이너 등록</Link>
-        </Button>
-      </Boxs>
-    </Container>
+          트레이너 소개
+        </button>
+        <button
+          type="button"
+          onClick={() => changeMenu(1)}
+          className={`${menu === 1 ? 'active' : ''}`}
+        >
+          장소
+        </button>
+      </Tab>
+      <article className="gym_detail">{menuList[menu]}</article>
+      <article className="btn_area">
+        <Link to="/tainerCreate">트레이너 등록</Link>
+        <Link to="/">문의하기</Link>
+      </article>
+    </GymContainer>
   );
 };
 export default GymDetailPage;

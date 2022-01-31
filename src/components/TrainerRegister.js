@@ -243,9 +243,9 @@ const TrainerRegister = () => {
 
   return (
     <TrainerContainer>
-      {/* <button onClick={onClick} type="button">
+      <button onClick={onClick} type="button">
         login
-      </button> */}
+      </button>
       <h1>트레이너 {isEditMode && editMode ? '수정' : '등록'}</h1>
       <form onSubmit={handleSubmit}>
         <ul>
