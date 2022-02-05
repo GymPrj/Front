@@ -9,6 +9,7 @@ import Footer from '../components/common/Footer';
 import TrainerRegister from '../components/TrainerRegister';
 import GymDetailPage from '../components/GymDetailPage';
 import TrainerDetailPage from '../components/TrainerDetailPage';
+import AdminPage from '../components/admin/AdminPage';
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
               exact
               component={TrainerDetailPage}
             />
+            <Route path="/adm" exact component={AdminPage} />
           </Switch>
         </div>
         <Footer />

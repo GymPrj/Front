@@ -235,16 +235,18 @@ const RegisterCompany = () => {
   };
 
   const onClick = data => {
-    const { ceoName, email, password, gymName, tel } = data;
+    const { ceoName, email, password, gymName, tel, detailAddress } = data;
     const postData = {
       businessNumber,
       ceoName,
       cityId: citySelct,
+      detailAddress,
       email,
       gymName,
       password,
       tel,
       townId: townSelect,
+      memberTypeId: 1,
     };
 
     dispatch({
