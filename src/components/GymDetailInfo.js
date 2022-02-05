@@ -20,10 +20,9 @@ const Thumbs = styled.div`
   }
   ul {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     li {
       position: relative;
-      width: calc(25% - 8px);
       background-repeat: no-repeat;
       background-size: cover;
       &.active {
@@ -54,12 +53,27 @@ const Thumbs = styled.div`
       margin-top: 10px;
       li {
         height: 100px;
+        width: calc(25% - 8px);
+        &:not(:last-child) {
+          margin-right: 11px;
+        }
       }
     }
   }
   @media ${props => props.theme.mobile} {
     .thumbs {
-      height: 250px;
+      height: 0;
+      padding-bottom: 58.337vw;
+    }
+    ul {
+      margin-top: 8px;
+      li {
+        width: calc(25% - 6px);
+        height: 60px;
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
     }
   }
 `;
@@ -101,6 +115,16 @@ const GymInfo = styled.div`
     }
   }
   @media ${props => props.theme.mobile} {
+    h1 {
+      margin: 35px 0 10px;
+      padding-bottom: 10px;
+      font-size: 20px;
+    }
+    .map {
+      height: 0;
+      padding-bottom: 17.938vh;
+      margin-top: 10px;
+    }
   }
 `;
 
@@ -126,6 +150,7 @@ const GymDetailInfo = info => {
       <li
         className={active === index ? 'active' : ''}
         style={{ backgroundImage: `url(${img})` }}
+        key={img}
       >
         <button type="button" onClick={() => changeimg(img, index)}>
           <img src={img} alt="" />
@@ -153,12 +178,6 @@ const GymDetailInfo = info => {
           <dd>{memberCount}</dd>
           <dt>주소</dt>
           <dd>{detailAddress}</dd>
-          {detailAddress && (
-            <>
-              <dt>주소</dt>
-              <dd>{detailAddress}</dd>
-            </>
-          )}
         </dl>
         <div className="map">
           <img

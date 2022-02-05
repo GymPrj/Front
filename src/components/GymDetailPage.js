@@ -10,7 +10,7 @@ const GymContainer = styled.section`
   @media ${props => props.theme.pc} {
     width: 1280px;
     margin: 0 auto;
-    & > .gym_info {
+    & > .gym_info_container {
       margin-top: 20px;
       display: flex;
       justify-content: space-between;
@@ -25,7 +25,10 @@ const GymContainer = styled.section`
   @media ${props => props.theme.mobile} {
     .gym_detail {
       h1 {
+        margin: 15px 0 25px;
+        padding-top: 30px;
         font-size: 20px;
+        border-top: 1px solid #c4c4c4;
       }
     }
   }
@@ -52,9 +55,7 @@ const GymContainer = styled.section`
   }
   @media ${props => props.theme.mobile} {
     .gym_info {
-      .gym_info {
-        padding: 0 15px;
-      }
+      padding: 0 15px;
     }
     .gym_detail {
       padding: 0 15px;
@@ -109,9 +110,9 @@ const Tab = styled.div`
 `;
 
 const Ul = styled.ul`
-  li {
+  & > li {
     &:not(:last-child) {
-      margin-bottom: 40px;
+      margin-bottom: 45px;
     }
     button {
       display: flex;
@@ -121,23 +122,61 @@ const Ul = styled.ul`
       background-color: transparent;
       cursor: pointer;
       font-weight: 700;
+      font-size: 17px;
       .trainer_pic {
-        width: 90px;
-        height: 90px;
-        margin-right: 30px;
+        width: 85px;
+        height: 85px;
         border-radius: 100%;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
       }
     }
+    p {
+      margin: 20px 0 35px;
+      font-size: 14px;
+      line-height: 1.3;
+      word-break: keep-all;
+    }
+    h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    li {
+      position: relative;
+      padding-left: 15px;
+      font-family: 'Noto Sans KR', 'sans-serif';
+      font-size: 16px;
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 100%;
+        background-color: #000;
+      }
+    }
   }
   @media ${props => props.theme.pc} {
     button {
-      font-size: 17px;
+      .trainer_pic {
+        margin-right: 30px;
+      }
     }
   }
   @media ${props => props.theme.mobile} {
+    button {
+      .trainer_pic {
+        margin-right: 12px;
+      }
+    }
   }
 `;
 
@@ -190,8 +229,24 @@ const GymDetailPage = () => {
                 'url(https://health.chosun.com/site/data/img_dir/2021/03/19/2021031902208_0.jpg)',
             }}
           />
-          <p>{val.name}</p>
+          <strong>{val.name}</strong>
         </button>
+        <p>
+          안녕하세요. 근력운동 전문가 김헬스 입니다. <br />
+          운동을 재미있고 쉽게 알려드려요. <br />
+          <br />
+          건강을 위해서 근육운동은 필수 입니다. 운동이 지루하고 재미 없었다면
+          저화 함께 재미있게 근력운동을 해봐요.
+        </p>
+        <div>
+          <h3>[주요이력]</h3>
+          <ol>
+            <li>헬스대학교 졸업</li>
+            <li>생활스포츠 지도자2급</li>
+            <li>주짓수 강사 자격증</li>
+            <li>Strength Coaching Master class 수료</li>
+          </ol>
+        </div>
       </li>
     );
   });
@@ -216,7 +271,7 @@ const GymDetailPage = () => {
 
   return (
     <GymContainer>
-      <article className="gym_info">
+      <article className="gym_info_container">
         <GymDetailInfo
           gymName={gymName}
           ceoName={ceoName}

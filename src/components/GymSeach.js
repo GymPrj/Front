@@ -114,7 +114,7 @@ const MainContainer = styled.div`
           }
         }
         &.addres_area {
-          padding: 20px 20px 0;
+          padding: 15px 15px 0;
           h1 {
             display: none;
           }
@@ -125,15 +125,15 @@ const MainContainer = styled.div`
             justify-content: space-between;
             select,
             input {
-              margin-bottom: 20px;
+              margin-bottom: 15px;
               font-size: 14px;
               height: 44px;
             }
             #cityId {
-              margin-right: 20px;
+              margin-right: 15px;
             }
             select {
-              width: calc(50% - 10px);
+              width: calc(50% - 8px);
             }
             & > div,
             input {
@@ -212,7 +212,7 @@ const GymListArea = styled.div`
     padding-bottom: 50px;
     & > h1 {
       font-size: 20px;
-      padding: 25px 20px 18px;
+      padding: 25px 15px 18px;
     }
     & > ul {
       justify-content: space-between;

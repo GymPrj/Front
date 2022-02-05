@@ -112,7 +112,7 @@ const TrainerContainer = styled.section`
     }
   }
   @media ${props => props.theme.mobile} {
-    padding: 0 20px 80px;
+    padding: 0 15px 80px;
     & > h1 {
       margin: 60px 0 30px;
       font-size: 22px;
