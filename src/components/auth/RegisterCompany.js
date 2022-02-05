@@ -125,7 +125,7 @@ const RegisterContainer = styled.section`
   }
   @media ${props => props.theme.mobile} {
     margin-bottom: 80px;
-    padding: 0 30px;
+    padding: 0 25px;
     & > .tit {
       h1 {
         margin: 60px 0 12px;
@@ -245,6 +245,7 @@ const RegisterCompany = () => {
       password,
       tel,
       townId: townSelect,
+      memberTypeId: 1,
     };
 
     dispatch({

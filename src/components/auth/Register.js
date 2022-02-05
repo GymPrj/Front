@@ -13,7 +13,7 @@ const RegisterContainer = styled.section`
     outline: none;
     transition: 0.2s ease border;
     &:focus {
-      border-color: ${props => props.theme.mainPurpleColor};
+      border-color: ${props => props.theme.mainPurpleColor} !important;
     }
   }
   & > .tit {
@@ -165,7 +165,7 @@ const RegisterContainer = styled.section`
   }
   @media ${props => props.theme.mobile} {
     margin-bottom: 80px;
-    padding: 0 30px;
+    padding: 0 25px;
     & > .tit {
       h1 {
         margin: 60px 0 12px;
@@ -273,6 +273,7 @@ const Register = () => {
       age,
       city: citySelct,
       email,
+      memberTypeId: 1,
       name,
       password,
       phone,
