@@ -55,3 +55,9 @@ export const TRAINER_DELETE_SUCCESS = 'TRAINER_DELETE_SUCCESS';
 
 // 트레이너 등록/수정 모드
 export const TRAINER_EDIT_MODE = 'TRAINER_EDIT_MODE';
+
+// 코멘드 등록/수정/삭제
+ export const COMMENT_ADD = 'COMMENT_ADD';
+ export const COMMENT_EDIT = 'COMMENT_EDIT';
+ export const COMMENT_DELETE = 'COMMENT_DELETE';
+
