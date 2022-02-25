@@ -148,7 +148,7 @@ const TrainerDetailPage = () => {
           className="thumbs"
           style={{
             backgroundImage:
-              'url(https://fitnessandfashion.in/wp-content/uploads/2021/05/gorilla-freak-wt5jg8_WrJg-unsplash-2-scaled-e1621759352550.jpg)',
+              'url()',
           }}
         />
         <div className="info">
