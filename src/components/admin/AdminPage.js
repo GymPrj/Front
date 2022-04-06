@@ -15,18 +15,60 @@ const AdmingContainer = styled.div`
     box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
       0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
     h1 {
-      margin-bottom: 70px;
+      padding: 10px 15px 40px;
       font-size: 22px;
     }
   }
 `;
 
-const TableContainer = styled.div``;
+const TableContainer = styled.div`
+  table {
+    width: 100%;
+    th {
+      padding: 10px 16px 15px;
+      text-align: left;
+      font-size: 15px;
+    }
+    tbody {
+      tr {
+        border-top: 1px solid #c4c4c4;
+        td {
+          padding: 6px 16px;
+          font-size: 14px;
+          button {
+            padding: 2px 10px;
+            border-radius: 4px;
+            background-color: ${props => props.theme.mainPurpleColor};
+            color: #fff;
+            border: 0;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+`;
 
+// https://mui.com/getting-started/templates/dashboard/
 const AdminPage = () => {
   const [pendingList, setPendingList] = useState();
 
-  const acceptGym = () => {};
+  const acceptGym = async () => {
+    // id
+    if (window.confirm('승인하시겠습니까?')) {
+      const url = 'acceptGym';
+      await axios
+        .post(`/admin/${url}/id`)
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (err) {
+          alert(err);
+        });
+    } else {
+      alert('취소하였습니다.');
+    }
+  };
 
   const getPendingList = async () => {
     const url = 'findGymPending';
@@ -34,7 +76,7 @@ const AdminPage = () => {
     await axios
       .get(`/admin/${url}`)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         const list = response.data.content;
         const lists = list.map(val => (
           <tr>
@@ -63,49 +105,31 @@ const AdminPage = () => {
     getPendingList();
   }, []);
 
-  //   const onClick = async () => {
-  //     const postData = {
-  //       email: 'admin@naver.com',
-  //       loginTypeId: 1,
-  //       password: 'admin1',
-  //     };
+  const onClick = async () => {
+    const postData = {
+      email: 'admin@naver.com',
+      loginTypeId: 1,
+      password: 'admin1',
+    };
 
-  //     await axios
-  //       .post('/session/login', postData)
-  //       .then(function (response) {
-  //         console.log(response, '성공');
-  //       })
-  //       .catch(function (err) {
-  //         console.log(err, postData);
-  //       });
-  //   };
-
-  //   const onClick2 = async () => {
-
-  //   const url = 'acceptGym';
-  // const num = 5;
-  // console.log(url);
-  // await axios
-  //   .post(`/admin/${url}/${num}`)
-  //   .then(function (response) {
-  //     console.log(response.data);
-  //   })
-  //   .catch(function (err) {
-  //     console.log(err);
-  //   });
-  //   };
+    await axios
+      .post('/session/login', postData)
+      .then(function (response) {
+        console.log(response, '성공');
+        alert('승인되었습니다.');
+      })
+      .catch(function (err) {
+        console.log(err, postData);
+      });
+  };
 
   return (
     <AdmingContainer>
-      <section>
-        <h1>승인 대기중인 헬스장 목록</h1>
-        {/* <button type="button" onClick={onClick}>
+      <button type="button" onClick={onClick}>
         login
       </button>
-      <button type="button" onClick={onClick2}>
-        login2
-      </button> */}
-
+      <section>
+        <h1>승인 대기중인 헬스장 목록</h1>
         <TableContainer>
           <table>
             <thead>

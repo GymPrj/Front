@@ -184,8 +184,11 @@ const GymListArea = styled.div`
       display: flex;
       flex-wrap: wrap;
       & > li {
-        width: calc(25% - 5px);
+        width: calc(25% - 15px);
         margin-bottom: 15px;
+        &:not(:nth-child(4n)) {
+          margin-right: 20px;
+        }
         .thumbs {
           height: 200px;
         }
